@@ -1,5 +1,5 @@
 import React from "react";
-import RecyclingGame from "./RecyclingGame";
+import RecyclingGame from "../components/RecyclingGame";
 
 
 const Home = () => {
