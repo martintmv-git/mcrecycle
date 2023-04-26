@@ -8,3 +8,5 @@ async function fetchData() {
     console.log(data);
   }
 }
+
+console.log("test")
