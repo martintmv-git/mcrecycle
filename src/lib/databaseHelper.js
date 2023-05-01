@@ -1,6 +1,6 @@
 import { supabase } from "./supabaseClient";
 
-async function fetchData() {
+export async function fetchData() {
   const { data, error } = await supabase.from("gameData").select("*");
   if (error) {
     console.error(error);
@@ -10,7 +10,7 @@ async function fetchData() {
   }
 }
 
-async function insertData(points) {
+export async function insertData(points) {
 	const { error } = await supabase.from("gameData").insert({points})
 	if (error) {
 		console.error(error)
@@ -20,7 +20,7 @@ async function insertData(points) {
 }
 
 
-async function updateData(id, points) {
+export async function updateData(id, points) {
 	const { error } = await supabase.from("gameData").update({points: points}).eq("id", id)
 	if (error) {
 		console.error(error)
@@ -29,7 +29,7 @@ async function updateData(id, points) {
 	}
 }
 
-async function deleteData(id) {
+export async function deleteData(id) {
 	const { error } = await supabase.from("gameData").delete().eq("id", id)
 	if (error) {
 		console.error(error)
