@@ -19,7 +19,12 @@ const RecyclingGame = () => {
       ctx.textBaseline = "top";
       ctx.textAlign = "right";
       ctx.fillText("Score: " + score, canvas.width - 10, 10);
-      ctx.fillText("Lives: " + lives, canvas.width - 10, 40);
+    
+      const heartSize = 20;
+      const heartSpacing = 15;
+      for (let i = 0; i < lives; i++) {
+        ctx.fillText("❤️", canvas.width - 10 - i * (heartSize + heartSpacing), 40);
+      }
     }
 
     function resizeCanvas() {
@@ -115,7 +120,9 @@ const RecyclingGame = () => {
 
       draw() {
         if (this.loaded) {
-          ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+          const aspectRatio = this.image.width / this.image.height;
+          const scaledWidth = this.height * aspectRatio;
+          ctx.drawImage(this.image, this.x, this.y, scaledWidth, this.height);
         }
       }
 
@@ -125,10 +132,10 @@ const RecyclingGame = () => {
     }
 
     const bucket = new Bucket(
-      canvas.width / 2 - 25,
-      canvas.height - 50,
-      50,
-      50
+      canvas.width / 2 - 50,
+      canvas.height - 100,
+      70,
+      70
     );
 
     const itemImages = [
@@ -185,13 +192,13 @@ const RecyclingGame = () => {
     let keys = {};
 
     function spawnItem() {
-      const width = 25 + Math.random() * 50;
-      const height = width;
+      const width = 50;
+      const height = 50;
       const x = Math.random() * (canvas.width - width);
       const y = 0 - height;
       let speed = 2 + Math.random() * 1 + Math.floor(score / 150) * 0.8;
       const image = itemImages[Math.floor(Math.random() * itemImages.length)];
-
+    
       const item = new FallingItem(x, y, width, height, speed, image);
     }
 
