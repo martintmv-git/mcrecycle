@@ -19,7 +19,7 @@ const RecyclingGame = () => {
       ctx.textBaseline = "top";
       ctx.textAlign = "right";
       ctx.fillText("Score: " + score, canvas.width - 10, 10);
-    
+
       const heartSize = 20;
       const heartSpacing = 15;
       for (let i = 0; i < lives; i++) {
@@ -44,17 +44,15 @@ const RecyclingGame = () => {
     let touchStartX;
     let touchStartBucketX;
 
-    function handleTouchStart(event) {
+    function handlePointerDown(event) {
       event.preventDefault();
-      const touch = event.touches[0];
-      touchStartX = touch.clientX;
+      touchStartX = event.clientX;
       touchStartBucketX = bucket.x;
     }
 
-    function handleTouchMove(event) {
+    function handlePointerMove(event) {
       event.preventDefault();
-      const touch = event.touches[0];
-      const deltaX = touch.clientX - touchStartX;
+      const deltaX = event.clientX - touchStartX;
       bucket.x = touchStartBucketX + deltaX;
 
       if (bucket.x < 0) {
@@ -64,7 +62,7 @@ const RecyclingGame = () => {
       }
     }
 
-    function handleTouchEnd(event) {
+    function handlePointerUp(event) {
       event.preventDefault();
     }
 
@@ -198,7 +196,7 @@ const RecyclingGame = () => {
       const y = 0 - height;
       let speed = 2 + Math.random() * 1 + Math.floor(score / 150) * 0.8;
       const image = itemImages[Math.floor(Math.random() * itemImages.length)];
-    
+
       const item = new FallingItem(x, y, width, height, speed, image);
     }
 
@@ -231,6 +229,13 @@ const RecyclingGame = () => {
       }
     }
 
+    function gameLoop() {
+      update();
+      requestAnimationFrame(gameLoop);
+    }
+
+    gameLoop();
+
     function moveBucket() {
       if (keys["ArrowLeft"] && bucket.x > 0) {
         bucket.x -= bucket.speed;
@@ -256,10 +261,6 @@ const RecyclingGame = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       currentBackground = 0;
     }
-
-    const updateLoop = setInterval(() => {
-      update();
-    }, 10);
 
     function startSpawningItems() {
       if (!spawnInterval) {
@@ -291,9 +292,9 @@ const RecyclingGame = () => {
 
     window.addEventListener("resize", resizeCanvas);
 
-    canvas.addEventListener("touchstart", handleTouchStart, false);
-    canvas.addEventListener("touchmove", handleTouchMove, false);
-    canvas.addEventListener("touchend", handleTouchEnd, false);
+    canvas.addEventListener("pointerdown", handlePointerDown, false);
+    canvas.addEventListener("pointermove", handlePointerMove, false);
+    canvas.addEventListener("pointerup", handlePointerUp, false);
   }, []);
 
   return (
