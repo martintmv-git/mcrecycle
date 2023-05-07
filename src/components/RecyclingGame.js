@@ -2,52 +2,30 @@ import React, { useEffect, useRef } from "react";
 
 const RecyclingGame = () => {
   const canvasRef = useRef(null);
-  const scoreRef = useRef(null);
-  const livesRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    const scoreElement = scoreRef.current;
-    const livesElement = livesRef.current;
-
     const startScore = 0;
     const startLives = 3;
+    let score = startScore;
+    let lives = startLives;
+    let spawnInterval;
 
-    let imagesToLoad = 0;
-
-    function loadImages() {
-      const imageSrcs = [
-        "/bin.png",
-        "/block.png",
-        "/assets/block-2.png",
-        "/assets/block-3.png",
-        "https://via.placeholder.com/800x600.png?text=Background+1",
-        "https://via.placeholder.com/800x600.png?text=Background+2",
-        "https://via.placeholder.com/800x600.png?text=Background+3",
-      ];
-
-      imagesToLoad = imageSrcs.length;
-
-      return imageSrcs.map((src) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = () => {
-          imagesToLoad--;
-        };
-        return img;
-      });
+    function drawScoreLives() {
+      ctx.font = "bold 20px Arial";
+      ctx.fillStyle = "white";
+      ctx.textBaseline = "top";
+      ctx.textAlign = "right";
+      ctx.fillText("Score: " + score, canvas.width - 10, 10);
+      ctx.fillText("Lives: " + lives, canvas.width - 10, 40);
     }
 
-
-    // Function to resize the canvas
     function resizeCanvas() {
-      // Set the canvas width and height based on the window size
-      canvas.width = window.innerWidth * 0.8;
-      canvas.height = window.innerHeight * 0.8;
+      canvas.width = window.innerWidth * 1;
+      canvas.height = window.innerHeight * 1;
 
-      // Make sure the canvas doesn't exceed a maximum size
       const maxWidth = 800;
       const maxHeight = 500;
       if (canvas.width > maxWidth) {
@@ -58,23 +36,6 @@ const RecyclingGame = () => {
       }
     }
 
-    // Resize the canvas initially
-    resizeCanvas();
-
-    // Resize the canvas when the window is resized
-    window.addEventListener("resize", resizeCanvas);
-
-    // Add touch event listeners
-    canvas.addEventListener("touchstart", handleTouchStart, false);
-    canvas.addEventListener("touchmove", handleTouchMove, false);
-    canvas.addEventListener("touchend", handleTouchEnd, false);
-
-    // Add touch event listeners
-    canvas.addEventListener("touchstart", handleTouchStart, false);
-    canvas.addEventListener("touchmove", handleTouchMove, false);
-    canvas.addEventListener("touchend", handleTouchEnd, false);
-
-    // Touch event handler functions
     let touchStartX;
     let touchStartBucketX;
 
@@ -91,7 +52,6 @@ const RecyclingGame = () => {
       const deltaX = touch.clientX - touchStartX;
       bucket.x = touchStartBucketX + deltaX;
 
-      // Make sure the bucket stays within the canvas bounds
       if (bucket.x < 0) {
         bucket.x = 0;
       } else if (bucket.x > canvas.width - bucket.width) {
@@ -121,15 +81,9 @@ const RecyclingGame = () => {
     }
 
     const backgroundImages = [
-      new Background(
-        "https://via.placeholder.com/800x600.png?text=Background+1"
-      ),
-      new Background(
-        "https://via.placeholder.com/800x600.png?text=Background+2"
-      ),
-      new Background(
-        "https://via.placeholder.com/800x600.png?text=Background+3"
-      ),
+      new Background("background-test.png"),
+      new Background("https://via.placeholder.com/800x600.png?text=Background+2"),
+      new Background("https://via.placeholder.com/800x600.png?text=Background+3"),
     ];
 
     let currentBackground = 0;
@@ -138,7 +92,6 @@ const RecyclingGame = () => {
       backgroundImages[currentBackground].draw();
     }
 
-    // Bucket class for the player's object
     class Bucket {
       constructor(x, y, width, height) {
         this.loaded = false;
@@ -154,20 +107,17 @@ const RecyclingGame = () => {
         };
       }
 
-      // Draw the bucket on the canvas
       draw() {
         if (this.loaded) {
           ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         }
       }
 
-      // Update the bucket's position based on the player's input
       update() {
         moveBucket();
       }
     }
 
-    // Create the bucket object
     const bucket = new Bucket(
       canvas.width / 2 - 25,
       canvas.height - 50,
@@ -175,7 +125,6 @@ const RecyclingGame = () => {
       50
     );
 
-    // FallingItem class for the falling objects
     class FallingItem {
       constructor(x, y, width, height, speed, imageSrc) {
         this.x = x;
@@ -185,26 +134,22 @@ const RecyclingGame = () => {
         this.speed = speed;
         this.image = new Image();
         this.image.src = imageSrc;
+        this.image.onload = () => {
+          items.push(this);
+        };
       }
 
-      // Draw the falling item on the canvas
       draw() {
-        ctx.drawImage(
-          this.image,
-          this.x,
-          this.y,
-          (this.image.width * this.width) / this.image.height,
-          this.height
-        );
+        const aspectRatio = this.image.width / this.image.height;
+        const scaledWidth = this.height * aspectRatio;
+        ctx.drawImage(this.image, this.x, this.y, scaledWidth, this.height);
       }
 
-      // Update the falling item's position based on its speed
       update() {
         this.y += this.speed;
         if (this.y + this.height > canvas.height) {
           items.splice(items.indexOf(this), 1);
           lives--;
-          livesElement.innerHTML = lives;
           if (lives <= 0) {
             clearInterval(updateLoop);
             alert("Game Over!");
@@ -212,8 +157,6 @@ const RecyclingGame = () => {
         }
       }
 
-      // Check if the falling item is colliding with the bucket
-      // Consider to make it so it only can fall sucessfully if it's in the bucket and not on the edges
       isColliding(bucket) {
         if (
           this.x < bucket.x + bucket.width &&
@@ -227,11 +170,9 @@ const RecyclingGame = () => {
       }
     }
 
-    const items = []; // Array to store falling items
-    let score = 0; // Initialize score
-    let lives = 3; // Initialize lives
+    const items = [];
+    let keys = {};
 
-    // Spawn a new falling item with random properties
     function spawnItem() {
       const width = 25 + Math.random() * 50;
       const height = width;
@@ -240,34 +181,34 @@ const RecyclingGame = () => {
       let speed = 2 + Math.random() * 1 + Math.floor(score / 150) * 0.8;
       let imageSrc;
 
-      // Randomly choose an image for the falling item
-      const randomNum = Math.floor(Math.random() * 3) + 1;
+      const randomNum = Math.floor(Math.random() * 5) + 1;
       switch (randomNum) {
         case 1:
-          imageSrc = "/block.png";
+          imageSrc = "/burger.png";
           break;
         case 2:
-          imageSrc = "/block-2.png";
+          imageSrc = "/cup.png";
           break;
         case 3:
-          imageSrc = "/block-3.png";
+          imageSrc = "/fries.png";
+          break;
+        case 4:
+          imageSrc = "/burger-2.png";
+          break;
+        case 5:
+          imageSrc = "/cup-2.png";
           break;
       }
 
       const item = new FallingItem(x, y, width, height, speed, imageSrc);
-
-      // Add the item to the items array once the image is loaded
-      item.image.onload = () => {
-        items.push(item);
-      };
     }
 
-    // Update the game state, check for collisions, and draw objects
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBackground();
       bucket.update();
       bucket.draw();
+      drawScoreLives();
 
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
@@ -276,9 +217,7 @@ const RecyclingGame = () => {
         if (item.isColliding(bucket)) {
           items.splice(i, 1);
           score += 25;
-          scoreElement.innerHTML = score;
 
-          // Update the background based on the score
           if (score >= 200 && currentBackground < 1) {
             currentBackground = 1;
           } else if (score >= 400 && currentBackground < 2) {
@@ -287,7 +226,6 @@ const RecyclingGame = () => {
         } else if (item.y + item.height > canvas.height) {
           items.splice(i, 1);
           lives--;
-          livesElement.innerHTML = lives;
           if (lives === 0) {
             resetGame();
           }
@@ -295,62 +233,75 @@ const RecyclingGame = () => {
       }
     }
 
-    let keys = {}; // Object to store the state of arrow keys
-
-    // Update the bucket's position based on arrow key input
-    function moveBucket() {
-      if (keys["ArrowLeft"] && bucket.x > 0) {
-        bucket.x -= bucket.speed;
+      function moveBucket() {
+        if (keys["ArrowLeft"] && bucket.x > 0) {
+          bucket.x -= bucket.speed;
+        }
+  
+        if (keys["ArrowRight"] && bucket.x < canvas.width - bucket.width) {
+          bucket.x += bucket.speed;
+        }
       }
-
-      if (keys["ArrowRight"] && bucket.x < canvas.width - bucket.width) {
-        bucket.x += bucket.speed;
+  
+      document.addEventListener("keydown", function (event) {
+        keys[event.code] = true;
+      });
+  
+      document.addEventListener("keyup", function (event) {
+        keys[event.code] = false;
+      });
+  
+      function resetGame() {
+        score = startScore;
+        lives = startLives;
+        items.length = 0;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
-    }
-
-    // Update the keys object based on keydown and keyup events
-    document.addEventListener("keydown", function (event) {
-      keys[event.code] = true;
-    });
-
-    document.addEventListener("keyup", function (event) {
-      keys[event.code] = false;
-    });
-
-    // Reset the game to its initial state
-    function resetGame() {
-      score = startScore;
-      lives = startLives;
-      items.length = 0;
-      scoreElement.innerHTML = score;
-      livesElement.innerHTML = lives;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-
-    // Set up the game loop
-    const updateLoop = setInterval(() => {
-      update();
-    }, 10);
-
-    // Spawn new items every second
-    setInterval(() => {
-      spawnItem();
-    }, 1000);
-  }, []);
-
-  return (
-    <>
-      <canvas ref={canvasRef} id="canvas" />
-      <div>
-        <span>Score: </span>
-        <span ref={scoreRef} id="score" />
-      </div>
-      <div>
-        <span>Lives: </span>
-        <span ref={livesRef} id="lives" />
-      </div>
-    </>
-  );
-};
-
-export default RecyclingGame;
+  
+      const updateLoop = setInterval(() => {
+        update();
+      }, 10);
+  
+      function startSpawningItems() {
+        if (!spawnInterval) {
+          spawnInterval = setInterval(() => {
+            spawnItem();
+          }, 1000);
+        }
+      }
+  
+      function stopSpawningItems() {
+        if (spawnInterval) {
+          clearInterval(spawnInterval);
+          spawnInterval = null;
+        }
+      }
+  
+      startSpawningItems();
+      resizeCanvas();
+  
+      function handleVisibilityChange() {
+        if (document.hidden) {
+          stopSpawningItems();
+        } else {
+          startSpawningItems();
+        }
+      }
+  
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+  
+      window.addEventListener("resize", resizeCanvas);
+  
+      canvas.addEventListener("touchstart", handleTouchStart, false);
+      canvas.addEventListener("touchmove", handleTouchMove, false);
+      canvas.addEventListener("touchend", handleTouchEnd, false);
+    }, []);
+  
+    return (
+      <>
+        <canvas ref={canvasRef} id="canvas" />
+      </>
+    );
+  };
+  
+  export default RecyclingGame;
