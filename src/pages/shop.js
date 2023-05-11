@@ -14,7 +14,7 @@ const Shop = () => {
       .then((response) => {
         setBalance(response.data.balance);
       })
-      .catch((error) => {
+      .catch((error) => { 
         console.error("Error fetching data: ", error);
       });
 

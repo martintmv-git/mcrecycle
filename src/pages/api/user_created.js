@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     const { user } = req.body;
 
     try {
-      await insertData(user.fullName);
+      await insertData(user.first_name);
       res.status(200).json({ message: "User created successfully." });
     } catch (error) {
       res.status(500).json({ error: "Error creating user." });
