@@ -31,21 +31,21 @@ const RecyclingGame = () => {
       const targetWidth = 9;
       const targetHeight = 16;
       const targetRatio = targetWidth / targetHeight;
-    
+
       let newWidth = window.innerWidth;
       let newHeight = window.innerHeight;
-    
+
       const currentRatio = newWidth / newHeight;
-    
+
       if (currentRatio > targetRatio) {
         newWidth = newHeight * targetRatio;
       } else {
         newHeight = newWidth / targetRatio;
       }
-    
+
       canvas.style.width = `${newWidth}px`;
       canvas.style.height = `${newHeight}px`;
-    
+
       canvas.width = targetWidth * 100;
       canvas.height = targetHeight * 100;
     }
@@ -53,36 +53,40 @@ const RecyclingGame = () => {
     let touchStartX;
     let touchStartBucketX;
 
-    function handlePointerDown(event) {
-      event.preventDefault();
-      touchStartX = event.clientX;
-      touchStartBucketX = bucket.x;
+    function getEventClientX(event) {
+      return event.type.startsWith("touch") ? event.touches[0].clientX : event.clientX;
     }
 
-    function handlePointerMove(event) {
+    function handlePointer(event, action) {
       event.preventDefault();
-      const deltaX = event.clientX - touchStartX;
-      bucket.x = touchStartBucketX + deltaX;
+      if (action === "down") {
+        touchStartX = getEventClientX(event);
+        touchStartBucketX = bucket.x;
+      } else if (action === "move" && bucket && bucket.loaded) {
+        const deltaX = getEventClientX(event) - touchStartX;
+        bucket.x = touchStartBucketX + deltaX;
 
-      if (bucket.x < 0) {
-        bucket.x = 0;
-      } else if (bucket.x > canvas.width - bucket.width) {
-        bucket.x = canvas.width - bucket.width;
+        if (bucket.x < 0) {
+          bucket.x = 0;
+        } else if (bucket.x > canvas.width - bucket.width) {
+          bucket.x = canvas.width - bucket.width;
+        }
       }
     }
 
-    function handlePointerUp(event) {
-      event.preventDefault();
+    function createImage(src, onload) {
+      const image = new Image();
+      image.src = src + "?" + new Date().getTime();
+      image.onload = onload;
+      return image;
     }
 
     class Background {
       constructor(imageSrc) {
         this.loaded = false;
-        this.image = new Image();
-        this.image.src = imageSrc;
-        this.image.onload = () => {
+        this.image = createImage(imageSrc, () => {
           this.loaded = true;
-        };
+        });
       }
 
       draw() {
@@ -117,13 +121,8 @@ const RecyclingGame = () => {
         this.width = width;
         this.height = height;
         this.speed = 7;
-        this.image = new Image();
-        this.image.src = "/bin.png";
-        this.imagePromise = new Promise((resolve) => {
-          this.image.onload = () => {
-            this.loaded = true;
-            resolve();
-          };
+        this.image = createImage("/bin.png", () => {
+          this.loaded = true;
         });
       }
 
@@ -140,14 +139,6 @@ const RecyclingGame = () => {
       }
     }
 
-    resizeCanvas();
-    const bucket = new Bucket(
-      canvas,
-      canvas.height - 100,
-      105,
-      105
-    );
-
     const itemImages = [
       "/burger.png",
       "/cup.png",
@@ -155,12 +146,8 @@ const RecyclingGame = () => {
       "/burger-2.png",
       "/cup-2.png",
     ].map((imageSrc) => {
-      const image = new Image();
-      image.src = imageSrc;
-      const imagePromise = new Promise((resolve) => {
-        image.onload = resolve;
-      });
-      return { image, imagePromise };
+      const image = createImage(imageSrc);
+      return { image };
     });
 
     class FallingItem {
@@ -203,6 +190,7 @@ const RecyclingGame = () => {
 
     const items = [];
     let keys = {};
+    let bucket;
 
     function spawnItem() {
       const width = 105;
@@ -222,14 +210,26 @@ const RecyclingGame = () => {
       }
     }
 
-    async function startGame() {
-      await Promise.all([
-        bucket.imagePromise,
-        ...itemImages.map(({ imagePromise }) => imagePromise),
-      ]);
+    function startGame() {
+      resizeCanvas();
+
+      // Increase the bucket size by 20%
+      const bucketWidth = 105 * 1.2;
+      const bucketHeight = 105 * 1.2;
+
+      bucket = new Bucket(
+        canvas,
+        canvas.height - bucketHeight,
+        bucketWidth,
+        bucketHeight
+      );
 
       gameLoop();
-      startSpawningItems();
+
+      // Check if the document is visible before starting to spawn items
+      if (!document.hidden) {
+        startSpawningItems();
+      }
     }
 
     startGame();
@@ -264,18 +264,24 @@ const RecyclingGame = () => {
     function moveBucket() {
       if (keys["ArrowLeft"] && bucket.x > 0) {
         bucket.x -= bucket.speed;
+        if (bucket.x < 0) {
+          bucket.x = 0;
+        }
       }
 
       if (keys["ArrowRight"] && bucket.x < canvas.width - bucket.width) {
         bucket.x += bucket.speed;
+        if (bucket.x > canvas.width - bucket.width) {
+          bucket.x = canvas.width - bucket.width;
+        }
       }
     }
 
-    document.addEventListener("keydown", function (event) {
+    document.addEventListener("keydown", (event) => {
       keys[event.code] = true;
     });
 
-    document.addEventListener("keyup", function (event) {
+    document.addEventListener("keyup", (event) => {
       keys[event.code] = false;
     });
 
@@ -314,9 +320,13 @@ const RecyclingGame = () => {
 
     window.addEventListener("resize", resizeCanvas);
 
-    canvas.addEventListener("pointerdown", handlePointerDown, false);
-    canvas.addEventListener("pointermove", handlePointerMove, false);
-    canvas.addEventListener("pointerup", handlePointerUp, false);
+    canvas.addEventListener("pointerdown", (event) => handlePointer(event, "down"), false);
+    canvas.addEventListener("pointermove", (event) => handlePointer(event, "move"), false);
+    canvas.addEventListener("pointerup", (event) => handlePointer(event, "up"), false);
+
+    canvas.addEventListener("touchstart", (event) => handlePointer(event, "down"), false);
+    canvas.addEventListener("touchmove", (event) => handlePointer(event, "move"), false);
+    canvas.addEventListener("touchend", (event) => handlePointer(event, "up"), false);
   }, []);
 
   return (
