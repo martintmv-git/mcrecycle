@@ -1,15 +1,21 @@
 import React from "react";
-import RecyclingGame from "../components/RecyclingGame";
+import Link from "next/link";
 
-
-const Home = () => {
-
+export default function Home() {
   return (
     <div>
-      <h1>McDonald's Recycling Game</h1>
-      <RecyclingGame />
+      <h1>Welcome to My Game</h1>
+      <Link href="/leaderboard">
+        <span>View Leaderboard</span>
+      </Link>
+
+      <style jsx>{`
+        span {
+          cursor: pointer;
+          text-decoration: underline;
+          color: blue;
+        }
+      `}</style>
     </div>
   );
-};
-
-export default Home;
+}
