@@ -1,21 +1,29 @@
-import React from "react";
-import Link from "next/link";
+import React, { useState } from 'react';
+import RecyclingGame from '../components/RecyclingGame';
+import StartScreen from '../components/StartScreen';
 
-export default function Home() {
+const Home = () => {
+  const [gameStarted, setGameStarted] = useState(false);
+
+  const handleStartGame = () => {
+    setGameStarted(true);
+  };
+
+  const handleLeaderboards = () => {
+    console.log('Leaderboards button clicked');
+  };
+
+  const handleShop = () => {
+    console.log('Shop button clicked');
+  };
+
   return (
     <div>
-      <h1>Welcome to My Game</h1>
-      <Link href="/leaderboard">
-        <span>View Leaderboard</span>
-      </Link>
-
-      <style jsx>{`
-        span {
-          cursor: pointer;
-          text-decoration: underline;
-          color: blue;
-        }
-      `}</style>
+      {gameStarted ? (
+        <RecyclingGame />
+      ) : (
+        <StartScreen onStartGame={handleStartGame} onLeaderboards={handleLeaderboards} onShop={handleShop} />
+      )}
     </div>
   );
 }
