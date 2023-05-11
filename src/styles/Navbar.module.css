@@ -1,0 +1,59 @@
+/* components/Navbar.module.css */
+.navbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 20px;
+  width: 30px;
+  padding: 1rem;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.9
+  ); /* Add a background color for better visibility */
+  border-radius: 4px; /* Add border-radius for a smoother appearance */
+}
+
+.hamburger-line {
+  background-color: #333; /* Change this color to make the button more visible */
+  height: 3px;
+  width: 100%;
+}
+
+/* Rest of the CSS remains the same */
+
+.nav-menu {
+  background-color: #333;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 200px;
+  padding: 1.5rem 0;
+  box-shadow: -4px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+  display: block;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  background-color: #444;
+}
