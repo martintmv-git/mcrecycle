@@ -1,12 +1,46 @@
 import { supabase } from "./supabaseClient";
 
-async function fetchData() {
-  const { data, error } = await supabase.from("your_table").select("*");
+export async function fetchData(userId) {
+  const { data, error } = await supabase.from('gameData').select('*').order('points', { ascending: false });
+
   if (error) {
     console.error(error);
   } else {
-    console.log(data);
+    if (userId) {
+      const userRank = data.findIndex((player) => player.id === userId) + 1;
+      return { data, userRank };
+    }
+    return data;
   }
 }
 
-console.log("test")
+
+export async function insertData(name, points) {
+  const { error } = await supabase.from("gameData").insert({ name, points });
+  if (error) {
+    console.error(error);
+  } else {
+    console.log("inserted");
+  }
+}
+
+export async function updateData(id, points) {
+  const { error } = await supabase
+    .from("gameData")
+    .update({ points: points })
+    .eq("id", id);
+  if (error) {
+    console.error(error);
+  } else {
+    console.log("updated");
+  }
+}
+
+export async function deleteData(id) {
+  const { error } = await supabase.from("gameData").delete().eq("id", id);
+  if (error) {
+    console.error(error);
+  } else {
+    console.log("deleted");
+  }
+}
