@@ -14,31 +14,40 @@ const RecyclingGame = () => {
     let spawnInterval;
 
     function drawScoreLives() {
-      ctx.font = "bold 20px Arial";
+      ctx.font = "bold 40px Arial";
       ctx.fillStyle = "white";
       ctx.textBaseline = "top";
       ctx.textAlign = "right";
-      ctx.fillText("Score: " + score, canvas.width - 10, 10);
+      ctx.fillText("Score: " + score, canvas.width - 10, 20);
 
-      const heartSize = 20;
-      const heartSpacing = 15;
+      const heartSize = 35;
+      const heartSpacing = 22.5;
       for (let i = 0; i < lives; i++) {
-        ctx.fillText("❤️", canvas.width - 10 - i * (heartSize + heartSpacing), 40);
+        ctx.fillText("❤️", canvas.width - 10 - i * (heartSize + heartSpacing), 70);
       }
     }
 
     function resizeCanvas() {
-      canvas.width = window.innerWidth * 1;
-      canvas.height = window.innerHeight * 1;
-
-      const maxWidth = 800;
-      const maxHeight = 500;
-      if (canvas.width > maxWidth) {
-        canvas.width = maxWidth;
+      const targetWidth = 9;
+      const targetHeight = 16;
+      const targetRatio = targetWidth / targetHeight;
+    
+      let newWidth = window.innerWidth;
+      let newHeight = window.innerHeight;
+    
+      const currentRatio = newWidth / newHeight;
+    
+      if (currentRatio > targetRatio) {
+        newWidth = newHeight * targetRatio;
+      } else {
+        newHeight = newWidth / targetRatio;
       }
-      if (canvas.height > maxHeight) {
-        canvas.height = maxHeight;
-      }
+    
+      canvas.style.width = `${newWidth}px`;
+      canvas.style.height = `${newHeight}px`;
+    
+      canvas.width = targetWidth * 100;
+      canvas.height = targetHeight * 100;
     }
 
     let touchStartX;
@@ -92,7 +101,6 @@ const RecyclingGame = () => {
       new Background("background-6.png"),
       new Background("background-7.png"),
       new Background("background-8.png"),
-      // Add more backgrounds here
     ];
 
     let currentBackground = 0;
@@ -102,18 +110,21 @@ const RecyclingGame = () => {
     }
 
     class Bucket {
-      constructor(x, y, width, height) {
+      constructor(canvas, y, width, height) {
         this.loaded = false;
-        this.x = x;
+        this.x = canvas.width / 2 - width / 2;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.speed = 5;
+        this.speed = 7;
         this.image = new Image();
         this.image.src = "/bin.png";
-        this.image.onload = () => {
-          this.loaded = true;
-        };
+        this.imagePromise = new Promise((resolve) => {
+          this.image.onload = () => {
+            this.loaded = true;
+            resolve();
+          };
+        });
       }
 
       draw() {
@@ -129,11 +140,12 @@ const RecyclingGame = () => {
       }
     }
 
+    resizeCanvas();
     const bucket = new Bucket(
-      canvas.width / 2 - 50,
+      canvas,
       canvas.height - 100,
-      70,
-      70
+      105,
+      105
     );
 
     const itemImages = [
@@ -145,7 +157,10 @@ const RecyclingGame = () => {
     ].map((imageSrc) => {
       const image = new Image();
       image.src = imageSrc;
-      return image;
+      const imagePromise = new Promise((resolve) => {
+        image.onload = resolve;
+      });
+      return { image, imagePromise };
     });
 
     class FallingItem {
@@ -190,12 +205,12 @@ const RecyclingGame = () => {
     let keys = {};
 
     function spawnItem() {
-      const width = 50;
-      const height = 50;
+      const width = 105;
+      const height = 105;
       const x = Math.random() * (canvas.width - width);
       const y = 0 - height;
-      let speed = 2 + Math.random() * 1 + Math.floor(score / 150) * 0.8;
-      const image = itemImages[Math.floor(Math.random() * itemImages.length)];
+      let speed = 5 + Math.random() * 1.5 + Math.floor(score / 150) * 1;
+      const image = itemImages[Math.floor(Math.random() * itemImages.length)].image;
 
       const item = new FallingItem(x, y, width, height, speed, image);
     }
@@ -206,6 +221,18 @@ const RecyclingGame = () => {
         resetGame();
       }
     }
+
+    async function startGame() {
+      await Promise.all([
+        bucket.imagePromise,
+        ...itemImages.map(({ imagePromise }) => imagePromise),
+      ]);
+
+      gameLoop();
+      startSpawningItems();
+    }
+
+    startGame();
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -233,8 +260,6 @@ const RecyclingGame = () => {
       update();
       requestAnimationFrame(gameLoop);
     }
-
-    gameLoop();
 
     function moveBucket() {
       if (keys["ArrowLeft"] && bucket.x > 0) {
@@ -266,7 +291,7 @@ const RecyclingGame = () => {
       if (!spawnInterval) {
         spawnInterval = setInterval(() => {
           spawnItem();
-        }, 1000);
+        }, 1200);
       }
     }
 
@@ -276,9 +301,6 @@ const RecyclingGame = () => {
         spawnInterval = null;
       }
     }
-
-    startSpawningItems();
-    resizeCanvas();
 
     function handleVisibilityChange() {
       if (document.hidden) {

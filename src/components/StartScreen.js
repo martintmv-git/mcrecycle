@@ -11,7 +11,7 @@ const StartScreen = ({ onStartGame, onLeaderboards, onShop }) => {
       ctx.fillStyle = 'white';
       ctx.fillRect(x, y, width, height);
       ctx.fillStyle = 'black';
-      ctx.font = 'bold 20px Arial';
+      ctx.font = 'bold 50px Arial';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(text, x + width / 2, y + height / 2);
@@ -30,18 +30,29 @@ const StartScreen = ({ onStartGame, onLeaderboards, onShop }) => {
     }
 
     function resizeCanvas() {
-      canvas.width = window.innerWidth * 1;
-      canvas.height = window.innerHeight * 1;
-
-      const maxWidth = 800;
-      const maxHeight = 500;
-      if (canvas.width > maxWidth) {
-        canvas.width = maxWidth;
+        const targetWidth = 9;
+        const targetHeight = 16;
+        const targetRatio = targetWidth / targetHeight;
+      
+        let newWidth = window.innerWidth;
+        let newHeight = window.innerHeight;
+      
+        const currentRatio = newWidth / newHeight;
+      
+        if (currentRatio > targetRatio) {
+          // The window width is too large, decrease it to maintain aspect ratio
+          newWidth = newHeight * targetRatio;
+        } else {
+          // The window height is too large, decrease it to maintain aspect ratio
+          newHeight = newWidth / targetRatio;
+        }
+      
+        canvas.style.width = `${newWidth}px`;
+        canvas.style.height = `${newHeight}px`;
+      
+        canvas.width = targetWidth * 100; // 900
+        canvas.height = targetHeight * 100; // 1600
       }
-      if (canvas.height > maxHeight) {
-        canvas.height = maxHeight;
-      }
-    }
 
     function handleClick(event) {
         // Calculate the canvas size ratio between the actual size and the CSS size
@@ -79,7 +90,13 @@ const StartScreen = ({ onStartGame, onLeaderboards, onShop }) => {
     };
   }, [canvasRef]);
 
-  return <canvas ref={canvasRef} id="startScreenCanvas" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      id="startScreenCanvas"
+      style={{ display: 'block', margin: '0 auto' }}
+    />
+  );
 };
 
 export default StartScreen;
