@@ -320,9 +320,42 @@ const RecyclingGame = () => {
 
     window.addEventListener("resize", resizeCanvas);
 
-    canvas.addEventListener("pointerdown", (event) => handlePointer(event, "down"), false);
-    canvas.addEventListener("pointermove", (event) => handlePointer(event, "move"), false);
-    canvas.addEventListener("pointerup", (event) => handlePointer(event, "up"), false);
+    function isTouchDevice() {
+      return (
+        "ontouchstart" in window ||
+        (window.DocumentTouch && document instanceof window.DocumentTouch)
+      );
+    }
+
+    canvas.addEventListener(
+      "pointerdown",
+      (event) => {
+        if (isTouchDevice()) {
+          handlePointer(event, "down");
+        }
+      },
+      false
+    );
+
+    canvas.addEventListener(
+      "pointermove",
+      (event) => {
+        if (isTouchDevice()) {
+          handlePointer(event, "move");
+        }
+      },
+      false
+    );
+
+    canvas.addEventListener(
+      "pointerup",
+      (event) => {
+        if (isTouchDevice()) {
+          handlePointer(event, "up");
+        }
+      },
+      false
+    );
 
     canvas.addEventListener("touchstart", (event) => handlePointer(event, "down"), false);
     canvas.addEventListener("touchmove", (event) => handlePointer(event, "move"), false);
