@@ -7,6 +7,9 @@
 
 A game made by Pixel Minds using React 18, Next.js 13, Supabase 2, and Clerk 4.
 
+## Play the game
+https://pixel-minds.vercel.app
+
 ## Installation
 
 Clone the project and navigate to its directory:
