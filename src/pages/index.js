@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import RecyclingGame from '../components/RecyclingGame';
 import StartScreen from '../components/StartScreen';
+import { useRouter } from 'next/router';
 
 const Home = () => {
   const [gameStarted, setGameStarted] = useState(false);
@@ -9,12 +10,14 @@ const Home = () => {
     setGameStarted(true);
   };
 
+  const router = useRouter();
+
   const handleLeaderboards = () => {
-    console.log('Leaderboards button clicked');
+    router.push("/leaderboard");
   };
 
   const handleShop = () => {
-    console.log('Shop button clicked');
+    router.push("/shop");
   };
 
   return (
