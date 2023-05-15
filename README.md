@@ -15,8 +15,8 @@ https://pixel-minds.vercel.app
 Clone the project and navigate to its directory:
 
 ```shell
-git clone https://github.com/pixel-minds/mcrecycle.git
-cd mcrecycle
+git clone https://gitlab.com/victorwp/pixel-minds.git
+cd pixel-minds
 
 Install the dependencies
 npm install
