@@ -12,8 +12,8 @@ A game made by Pixel Minds using React 18, Next.js 13, Supabase 2, and Clerk 4.
 Clone the project and navigate to its directory:
 
 ```shell
-git clone https://gitlab.com/pixel-minds
-cd mcrecycle
+git clone https://gitlab.com/victorwp/pixel-minds.git
+cd pixel-minds
 
 Install the dependencies
 npm install
