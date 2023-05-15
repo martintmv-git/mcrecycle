@@ -120,7 +120,7 @@ const RecyclingGame = () => {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.speed = 7;
+        this.speed = 8;
         this.image = createImage("/bin.png", () => {
           this.loaded = true;
         });
@@ -197,7 +197,7 @@ const RecyclingGame = () => {
       const height = 105;
       const x = Math.random() * (canvas.width - width);
       const y = 0 - height;
-      let speed = 5 + Math.random() * 1.5 + Math.floor(score / 150) * 1;
+      let speed = 10 + Math.random() * 1.5 + Math.floor(score / 150) * 1;
       const image = itemImages[Math.floor(Math.random() * itemImages.length)].image;
 
       const item = new FallingItem(x, y, width, height, speed, image);
