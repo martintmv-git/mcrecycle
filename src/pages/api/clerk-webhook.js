@@ -1,6 +1,6 @@
 // api/clerk-webhook.js
 
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 
 export default async function handler(req, res) {
   const event = req.body;
