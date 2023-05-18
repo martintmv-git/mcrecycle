@@ -52,24 +52,30 @@ const RecyclingGame = () => {
 
     let touchStartX;
     let touchStartBucketX;
+    let isMouseDown = false;
 
     function getEventClientX(event) {
       return event.type.startsWith("touch") ? event.touches[0].clientX : event.clientX;
     }
 
     function handlePointer(event, action) {
-      event.preventDefault();
-      if (action === "down") {
-        touchStartX = getEventClientX(event);
-        touchStartBucketX = bucket.x;
-      } else if (action === "move" && bucket && bucket.loaded) {
-        const deltaX = getEventClientX(event) - touchStartX;
-        bucket.x = touchStartBucketX + deltaX;
+      if (isTouchDevice()) {
+        event.preventDefault();
+        if (action === "down") {
+          isMouseDown = true;
+          touchStartX = getEventClientX(event);
+          touchStartBucketX = bucket.x;
+        } else if (action === "move" && bucket && bucket.loaded && isMouseDown) {
+          const deltaX = getEventClientX(event) - touchStartX;
+          bucket.x = touchStartBucketX + deltaX * (canvas.width / parseFloat(canvas.style.width));
 
-        if (bucket.x < 0) {
-          bucket.x = 0;
-        } else if (bucket.x > canvas.width - bucket.width) {
-          bucket.x = canvas.width - bucket.width;
+          if (bucket.x < 0) {
+            bucket.x = 0;
+          } else if (bucket.x > canvas.width - bucket.width) {
+            bucket.x = canvas.width - bucket.width;
+          }
+        } else if (action === "up") {
+          isMouseDown = false;
         }
       }
     }
@@ -236,7 +242,7 @@ const RecyclingGame = () => {
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawBackground();
+      drawBackground ();
       bucket.update();
       bucket.draw();
       drawScoreLives();
@@ -262,17 +268,19 @@ const RecyclingGame = () => {
     }
 
     function moveBucket() {
-      if (keys["ArrowLeft"] && bucket.x > 0) {
-        bucket.x -= bucket.speed;
-        if (bucket.x < 0) {
-          bucket.x = 0;
+      if (!isTouchDevice()) {
+        if (keys["ArrowLeft"] && bucket.x > 0) {
+          bucket.x -= bucket.speed;
+          if (bucket.x < 0) {
+            bucket.x = 0;
+          }
         }
-      }
 
-      if (keys["ArrowRight"] && bucket.x < canvas.width - bucket.width) {
-        bucket.x += bucket.speed;
-        if (bucket.x > canvas.width - bucket.width) {
-          bucket.x = canvas.width - bucket.width;
+        if (keys["ArrowRight"] && bucket.x < canvas.width - bucket.width) {
+          bucket.x += bucket.speed;
+          if (bucket.x > canvas.width - bucket.width) {
+            bucket.x = canvas.width - bucket.width;
+          }
         }
       }
     }
@@ -330,9 +338,7 @@ const RecyclingGame = () => {
     canvas.addEventListener(
       "pointerdown",
       (event) => {
-        if (isTouchDevice()) {
-          handlePointer(event, "down");
-        }
+        handlePointer(event, "down");
       },
       false
     );
@@ -340,9 +346,7 @@ const RecyclingGame = () => {
     canvas.addEventListener(
       "pointermove",
       (event) => {
-        if (isTouchDevice()) {
-          handlePointer(event, "move");
-        }
+        handlePointer(event, "move");
       },
       false
     );
@@ -350,9 +354,7 @@ const RecyclingGame = () => {
     canvas.addEventListener(
       "pointerup",
       (event) => {
-        if (isTouchDevice()) {
-          handlePointer(event, "up");
-        }
+        handlePointer(event, "up");
       },
       false
     );
