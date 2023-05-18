@@ -1,5 +1,3 @@
-import Navbar from "@/components/Navbar";
-
 import "@/styles/globals.css";
 
 import {
@@ -34,7 +32,6 @@ function MyApp({ Component, pageProps }) {
       ) : (
         <>
           <SignedIn>
-			<Navbar/>
             <Component {...pageProps} />
           </SignedIn>
           <SignedOut>

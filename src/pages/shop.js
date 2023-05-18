@@ -1,33 +1,36 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import QRCode from "qrcode.react";
+import { useUser } from "@clerk/clerk-react"; // import useUser hook
 
 const Shop = () => {
   const [balance, setBalance] = useState(0);
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  useEffect(() => {
-    // You should replace this with your actual API endpoint
-    axios
-      .get("YOUR_API/user/balance")
-      .then((response) => {
-        setBalance(response.data.balance);
-      })
-      .catch((error) => { 
-        console.error("Error fetching data: ", error);
-      });
+  const { user } = useUser();
 
-    // Fetching items from your API
-    axios
-      .get("YOUR_API/shop/items")
-      .then((response) => {
-        setItems(response.data.items);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-  }, []);
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(`/api/balance?userId=${user.id}`)
+        .then((response) => {
+          setBalance(response.data.balance);
+        })
+        .catch((error) => {
+          console.error("Error fetching balance: ", error);
+        });
+
+      axios
+        .get("/api/items")
+        .then((response) => {
+          setItems(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching items: ", error);
+        });
+    }
+  }, [user]); // add user to dependency array
 
   const handleItemClick = (item) => {
     if (balance >= item.price) {
