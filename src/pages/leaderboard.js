@@ -9,7 +9,6 @@ const Leaderboard = () => {
   const [players, setPlayers] = useState([]);
   const router = useRouter();
 
-  // Add your logo image source here
   const logoSrc = './leaderboard.png';
   const logoImage = new Image();
   logoImage.src = logoSrc;
@@ -18,19 +17,18 @@ const Leaderboard = () => {
     fetchPlayers();
     const canvas = canvasRef.current;
     if (canvas) {
-      const ctx = canvas.getContext('2d');
       resizeCanvas();
       drawLeaderboard();
-
-      window.addEventListener('resize', () => {
-        resizeCanvas();
-        drawLeaderboard();
-      });
-
-      return () => {
-        window.removeEventListener('resize', resizeCanvas);
-      };
     }
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      drawLeaderboard();
+    });
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+    };
   }, [players]);
 
   const fetchPlayers = async () => {
@@ -78,19 +76,16 @@ const Leaderboard = () => {
     const logoHeight = logoImage.height * 1.5;
     const margin = 10;
 
-    // Draw left button
     ctx.fillStyle = 'black';
     ctx.beginPath();
     ctx.arc(buttonRadius + margin, buttonRadius + margin, buttonRadius, 0, 2 * Math.PI);
     ctx.fill();
 
-    // Draw right button
     ctx.fillStyle = 'black';
     ctx.beginPath();
     ctx.arc(canvas.width - buttonRadius - margin, buttonRadius + margin, buttonRadius, 0, 2 * Math.PI);
     ctx.fill();
 
-    // Draw logo
     ctx.drawImage(
       logoImage,
       (canvas.width - logoWidth) / 2,
@@ -110,7 +105,6 @@ const Leaderboard = () => {
     const x = event.clientX - canvas.offsetLeft;
     const y = event.clientY - canvas.offsetTop;
 
-    // Check if click is within the left button's circular area
     if (x >= 0 && x <= 2 * buttonRadius && y >= 0 && y <= 2 * buttonRadius) {
       handleLeftButtonClick();
     }
@@ -118,36 +112,38 @@ const Leaderboard = () => {
 
   const drawLeaderboard = () => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    drawNavbar();
+      drawNavbar();
 
-    ctx.font = 'bold 60px Arial';
-    ctx.fillStyle = 'black';
-    ctx.textBaseline = 'top';
-    ctx.textAlign = 'center';
-    ctx.fillText('Leaderboard', canvas.width / 2, 150);
+      ctx.font = 'bold 60px Arial';
+      ctx.fillStyle = 'black';
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.fillText('Leaderboard', canvas.width / 2, 150);
 
-    if (user) {
-      ctx.font = 'bold 30px Arial';
-      ctx.fillText(
-        `Welcome, ${user.fullName}! Your rank is {}`,
-        canvas.width / 2,
-        240
-      );
+      if (user) {
+        ctx.font = 'bold 30px Arial';
+        ctx.fillText(
+          `Welcome, ${user.fullName}! Your rank is {}`,
+          canvas.width / 2,
+          240
+        );
+      }
+
+      ctx.font = '27px Arial';
+      ctx.fillText('Rank', canvas.width / 4, 330);
+      ctx.fillText('Name', canvas.width / 2, 330);
+      ctx.fillText('Points', (3 * canvas.width) / 4, 330);
+
+      players.forEach((player, index) => {
+        ctx.fillText(index + 1, canvas.width / 4, 390 + index * 60);
+        ctx.fillText(player.name, canvas.width / 2, 390 + index * 60);
+        ctx.fillText(player.points, (3 * canvas.width) / 4, 390 + index * 60);
+      });
     }
-
-    ctx.font = '27px Arial';
-    ctx.fillText('Rank', canvas.width / 4, 330);
-    ctx.fillText('Name', canvas.width / 2, 330);
-    ctx.fillText('Points', (3 * canvas.width) / 4, 330);
-
-    players.forEach((player, index) => {
-      ctx.fillText(index + 1, canvas.width / 4, 390 + index * 60);
-      ctx.fillText(player.name, canvas.width / 2, 390 + index * 60);
-      ctx.fillText(player.points, (3 * canvas.width) / 4, 390 + index * 60);
-    });
   };
 
   return (

@@ -203,7 +203,7 @@ const RecyclingGame = () => {
       const height = 105;
       const x = Math.random() * (canvas.width - width);
       const y = 0 - height;
-      let speed = 10 + Math.random() * 1.5 + Math.floor(score / 150) * 1;
+      let speed = 10 + Math.random() * 1.5 + Math.floor(score / 150) * 3;
       const image = itemImages[Math.floor(Math.random() * itemImages.length)].image;
 
       const item = new FallingItem(x, y, width, height, speed, image);
@@ -219,9 +219,8 @@ const RecyclingGame = () => {
     function startGame() {
       resizeCanvas();
 
-      // Increase the bucket size by 20%
-      const bucketWidth = 105 * 1.2;
-      const bucketHeight = 105 * 1.2;
+      const bucketWidth = 105 * 1.7;
+      const bucketHeight = 105 * 1.7;
 
       bucket = new Bucket(
         canvas,
@@ -363,7 +362,6 @@ const RecyclingGame = () => {
     canvas.addEventListener("touchmove", (event) => handlePointer(event, "move"), false);
     canvas.addEventListener("touchend", (event) => handlePointer(event, "up"), false);
   }, []);
-
   return (
     <>
       <canvas ref={canvasRef} id="canvas" />
