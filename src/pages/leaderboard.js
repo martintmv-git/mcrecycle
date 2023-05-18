@@ -17,18 +17,20 @@ const Leaderboard = () => {
   useEffect(() => {
     fetchPlayers();
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    resizeCanvas();
-    drawLeaderboard();
-
-    window.addEventListener('resize', () => {
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
       resizeCanvas();
       drawLeaderboard();
-    });
 
-    return () => {
-      window.removeEventListener('resize', resizeCanvas);
-    };
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        drawLeaderboard();
+      });
+
+      return () => {
+        window.removeEventListener('resize', resizeCanvas);
+      };
+    }
   }, [players]);
 
   const fetchPlayers = async () => {
@@ -43,26 +45,28 @@ const Leaderboard = () => {
 
   const resizeCanvas = () => {
     const canvas = canvasRef.current;
-    const targetWidth = 9;
-    const targetHeight = 16;
-    const targetRatio = targetWidth / targetHeight;
+    if (canvas) {
+      const targetWidth = 9;
+      const targetHeight = 16;
+      const targetRatio = targetWidth / targetHeight;
 
-    let newWidth = window.innerWidth;
-    let newHeight = window.innerHeight;
+      let newWidth = window.innerWidth;
+      let newHeight = window.innerHeight;
 
-    const currentRatio = newWidth / newHeight;
+      const currentRatio = newWidth / newHeight;
 
-    if (currentRatio > targetRatio) {
-      newWidth = newHeight * targetRatio;
-    } else {
-      newHeight = newWidth / targetRatio;
+      if (currentRatio > targetRatio) {
+        newWidth = newHeight * targetRatio;
+      } else {
+        newHeight = newWidth / targetRatio;
+      }
+
+      canvas.style.width = `${newWidth}px`;
+      canvas.style.height = `${newHeight}px`;
+
+      canvas.width = targetWidth * 100;
+      canvas.height = targetHeight * 100;
     }
-
-    canvas.style.width = `${newWidth}px`;
-    canvas.style.height = `${newHeight}px`;
-
-    canvas.width = targetWidth * 100;
-    canvas.height = targetHeight * 100;
   };
 
   const drawNavbar = () => {
