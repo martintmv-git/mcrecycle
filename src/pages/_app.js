@@ -32,6 +32,7 @@ function MyApp({ Component, pageProps }) {
       ) : (
         <>
           <SignedIn>
+
             <Component {...pageProps} />
           </SignedIn>
           <SignedOut>
