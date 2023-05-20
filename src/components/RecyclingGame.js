@@ -14,21 +14,22 @@ const RecyclingGame = () => {
     let spawnInterval;
 
     function drawScoreLives() {
-      ctx.font = "bold 40px Arial";
+      ctx.font = "bold 60px Arial"; // Increase font size by 50%
       ctx.fillStyle = "white";
       ctx.textBaseline = "top";
       ctx.textAlign = "right";
-      ctx.fillText("Score: " + score, canvas.width - 10, 20);
-
-      const heartSize = 35;
-      const heartSpacing = 22.5;
+      ctx.fillText("" + score, canvas.width - 15, 30); // Increase right margin by 50% and top margin by 50%
+    
+      const heartSize = 52.5; // Increase heart size by 50%
+      const heartSpacing = 33.75; // Increase heart spacing by 50%
       for (let i = 0; i < lives; i++) {
-        ctx.fillText("❤️", canvas.width - 10 - i * (heartSize + heartSpacing), 70);
+        ctx.fillText("❤️", canvas.width - 15 - i * (heartSize + heartSpacing), 105); // Increase right margin by 50% and top margin by 50%
       }
     }
+    
 
     function resizeCanvas() {
-      const targetWidth = 10;
+      const targetWidth = 9;
       const targetHeight = 16;
       const targetRatio = targetWidth / targetHeight;
 
@@ -58,17 +59,25 @@ const RecyclingGame = () => {
       return event.type.startsWith("touch") ? event.touches[0].clientX : event.clientX;
     }
 
+    function getEventClientY(event) {
+      return event.type.startsWith("touch") ? event.touches[0].clientY : event.clientY;
+    }
+    
     function handlePointer(event, action) {
       if (isTouchDevice()) {
         event.preventDefault();
         if (action === "down") {
-          isMouseDown = true;
-          touchStartX = getEventClientX(event);
-          touchStartBucketX = bucket.x;
+          const x = getEventClientX(event);
+          const y = getEventClientY(event);
+          if (bucket.isTouched(x, y)) {
+            isMouseDown = true;
+            touchStartX = x;
+            touchStartBucketX = bucket.x;
+          }
         } else if (action === "move" && bucket && bucket.loaded && isMouseDown) {
           const deltaX = getEventClientX(event) - touchStartX;
           bucket.x = touchStartBucketX + deltaX * (canvas.width / parseFloat(canvas.style.width));
-
+    
           if (bucket.x < 0) {
             bucket.x = 0;
           } else if (bucket.x > canvas.width - bucket.width) {
@@ -79,6 +88,7 @@ const RecyclingGame = () => {
         }
       }
     }
+    
 
     function createImage(src, onload) {
       const image = new Image();
@@ -131,7 +141,7 @@ const RecyclingGame = () => {
           this.loaded = true;
         });
       }
-
+    
       draw() {
         if (this.loaded) {
           const aspectRatio = this.image.width / this.image.height;
@@ -139,11 +149,19 @@ const RecyclingGame = () => {
           ctx.drawImage(this.image, this.x, this.y, scaledWidth, this.height);
         }
       }
-
+    
       update() {
         moveBucket();
       }
+    
+      isTouched(x, y) {
+        const scaleFactor = parseFloat(canvas.style.width) / canvas.width;
+        const touchX = x / scaleFactor;
+        const touchY = y / scaleFactor;
+        return touchX >= this.x && touchX <= this.x + this.width && touchY >= this.y && touchY <= this.y + this.height;
+      }
     }
+    
 
     const itemImages = [
       "/burger.png",
@@ -224,10 +242,11 @@ const RecyclingGame = () => {
 
       bucket = new Bucket(
         canvas,
-        canvas.height - bucketHeight,
+        canvas.height - bucketHeight - 30, // Increase bottom margin by 50%
         bucketWidth,
         bucketHeight
       );
+      
 
       gameLoop();
 
