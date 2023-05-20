@@ -1,156 +1,88 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import { useUser } from '@clerk/clerk-react';
-import { useRouter } from 'next/router';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useUser } from "@clerk/clerk-react";
+import { useRouter } from "next/router";
+import Image from "next/image";
 
 const Leaderboard = () => {
-  const canvasRef = useRef(null);
   const { user } = useUser();
   const [players, setPlayers] = useState([]);
   const router = useRouter();
 
-  const logoSrc = './leaderboard.png';
-  const logoImage = new Image();
-  logoImage.src = logoSrc;
-
   useEffect(() => {
     fetchPlayers();
-    const canvas = canvasRef.current;
-    if (canvas) {
-      resizeCanvas();
-      drawLeaderboard();
-    }
-
-    window.addEventListener('resize', () => {
-      resizeCanvas();
-      drawLeaderboard();
-    });
-
-    return () => {
-      window.removeEventListener('resize', resizeCanvas);
-    };
-  }, [players]);
+  }, []);
 
   const fetchPlayers = async () => {
     try {
-      const response = await axios.get('/api/players');
-      const sortedPlayers = response.data.sort((a, b) => b.points - a.points);
+      const response = await axios.get("/api/players");
+      const sortedPlayers = response.data.sort(
+        (a, b) => b.points - a.points
+      );
       setPlayers(sortedPlayers);
     } catch (error) {
-      console.error('Error fetching players:', error);
+      console.error("Error fetching players:", error);
     }
-  };
-
-  const resizeCanvas = () => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const targetWidth = 9;
-      const targetHeight = 16;
-      const targetRatio = targetWidth / targetHeight;
-
-      let newWidth = window.innerWidth;
-      let newHeight = window.innerHeight;
-
-      const currentRatio = newWidth / newHeight;
-
-      if (currentRatio > targetRatio) {
-        newWidth = newHeight * targetRatio;
-      } else {
-        newHeight = newWidth / targetRatio;
-      }
-
-      canvas.style.width = `${newWidth}px`;
-      canvas.style.height = `${newHeight}px`;
-
-      canvas.width = targetWidth * 100;
-      canvas.height = targetHeight * 100;
-    }
-  };
-
-  const drawNavbar = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-
-    const buttonRadius = 30;
-    const logoWidth = logoImage.width * 1.5;
-    const logoHeight = logoImage.height * 1.5;
-    const margin = 10;
-
-    ctx.fillStyle = 'black';
-    ctx.beginPath();
-    ctx.arc(buttonRadius + margin, buttonRadius + margin, buttonRadius, 0, 2 * Math.PI);
-    ctx.fill();
-
-    ctx.fillStyle = 'black';
-    ctx.beginPath();
-    ctx.arc(canvas.width - buttonRadius - margin, buttonRadius + margin, buttonRadius, 0, 2 * Math.PI);
-    ctx.fill();
-
-    ctx.drawImage(
-      logoImage,
-      (canvas.width - logoWidth) / 2,
-      (2 * buttonRadius - logoHeight) / 2,
-      logoWidth,
-      logoHeight
-    );
   };
 
   const handleLeftButtonClick = () => {
-    router.push('/');
-  };
-
-  const handleCanvasClick = (event) => {
-    const canvas = canvasRef.current;
-    const buttonRadius = 30;
-    const x = event.clientX - canvas.offsetLeft;
-    const y = event.clientY - canvas.offsetTop;
-
-    if (x >= 0 && x <= 2 * buttonRadius && y >= 0 && y <= 2 * buttonRadius) {
-      handleLeftButtonClick();
-    }
-  };
-
-  const drawLeaderboard = () => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      drawNavbar();
-
-      ctx.font = 'bold 60px Arial';
-      ctx.fillStyle = 'black';
-      ctx.textBaseline = 'top';
-      ctx.textAlign = 'center';
-      ctx.fillText('Leaderboard', canvas.width / 2, 150);
-
-      if (user) {
-        ctx.font = 'bold 30px Arial';
-        ctx.fillText(
-          `Welcome, ${user.fullName}! Your rank is {}`,
-          canvas.width / 2,
-          240
-        );
-      }
-
-      ctx.font = '27px Arial';
-      ctx.fillText('Rank', canvas.width / 4, 330);
-      ctx.fillText('Name', canvas.width / 2, 330);
-      ctx.fillText('Points', (3 * canvas.width) / 4, 330);
-
-      players.forEach((player, index) => {
-        ctx.fillText(index + 1, canvas.width / 4, 390 + index * 60);
-        ctx.fillText(player.name, canvas.width / 2, 390 + index * 60);
-        ctx.fillText(player.points, (3 * canvas.width) / 4, 390 + index * 60);
-      });
-    }
+    router.push("/");
   };
 
   return (
-    <canvas
-      ref={canvasRef}
-      onClick={handleCanvasClick}
-    ></canvas>
+    <div className="leaderboard-container">
+      <div className="leaderboard">
+        <div className="navbar">
+          <button className="left-button" onClick={handleLeftButtonClick}>
+            Back
+          </button>
+          <div className="logo">
+            <Image
+              src="/leaderboard.png"
+              alt="Leaderboard logo"
+              width={150}
+              height={120}
+            />
+          </div>
+        </div>
+        <br></br>
+        {user && (
+  <div className="welcome-wrapper">
+    <h2 className="leaderboard-welcome">
+      👋 Welcome, {user.fullName}!
+    </h2>
+    <p className="rank-message">
+      Your current rank is {1}
+    </p>
+  </div>
+)}
+
+<div className="table">
+  <div className="header-row">
+    <div>Rank</div>
+    <div>Name</div>
+    <div>Points</div>
+  </div>
+  {players.map((player, index) => {
+    let rowClass = "player-row";
+    if (index === 0) rowClass += " gold";
+    else if (index === 1) rowClass += " silver";
+    else if (index === 2) rowClass += " bronze";
+    return (
+      <div key={index} className={rowClass}>
+        <div>{index + 1}</div>
+        <div>{player.name}</div>
+        <div>{player.points}</div>
+      </div>
+    );
+  })}
+  <button className="left-button">
+    View All
+  </button>
+</div>
+
+      </div>
+    </div>
   );
 };
 
