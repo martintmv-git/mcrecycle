@@ -52,6 +52,10 @@ canvas {
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
+
+/* Leaderboard */
+
+
 .leaderboard-container {
   display: flex;
   justify-content: center;
@@ -60,7 +64,6 @@ canvas {
   width: 100%;
   background-color: black;
 }
-
 .leaderboard {
   display: flex;
   flex-direction: column;
@@ -190,26 +193,33 @@ canvas {
   color: #27251F; /* McDonald's Dark Brown */
 }
 .welcome-wrapper {
-  background-color: rgba(28, 41, 39, 0.151); /* McDonald's Yellow with low opacity */
+  background-color: #27251F; /* McDonald's Yellow with low opacity */
   border-radius: 15px; /* Rounded corners */
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  margin-top: 8vh; /* 5% of the viewport height */
-  width: 90%;
-  padding: 1em;
+  margin-top: 7vh; /* 5% of the viewport height */
+  width: 100%;
+  padding: 0.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 20%;
 }
+@media screen and (max-width: 768px) {
+  .welcome-wrapper {
+    margin-top: 3vh; /* 10% of the viewport height */
+  }
+}
+
 .leaderboard-welcome {
-  font-size: 1.8em;
-  color: #27251F; /* McDonald's Dark Brown */
+  font-size: 1.4em;
+  color: #ffffff; /* McDonald's Dark Brown */
   text-align: center;
   margin-bottom: 1em;
 }
 .rank-message {
   font-size: 1.2em;
-  color: #27251F; /* McDonald's Dark Brown */
+  color: #ffffff; /* McDonald's Dark Brown */
   text-align: center;
   padding: 1em;
   background-color: rgba(255, 199, 44, 0.143); /* McDonald's Yellow with low opacity */
@@ -217,6 +227,9 @@ canvas {
   border-radius: 15px; /* Rounded corners */
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
+
+/* Start Screen */
+
 .startscreen-container {
   display: flex;
   flex-direction: column;
@@ -244,7 +257,7 @@ canvas {
   padding: 1em;
   font-size: 1.5em;
   color: white;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.752);
   border: none;
   border-radius: 5px;
   text-align: center;
@@ -252,5 +265,5 @@ canvas {
 }
 .startscreen-button:hover {
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.469);
 }
