@@ -1,6 +1,7 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: "Helvetica", Arial, sans-serif;
 }
 
 .container {
@@ -62,7 +63,7 @@ canvas {
   align-items: center;
   height: 100vh;
   width: 100%;
-  background-color: black;
+  background-color: rgb(255, 255, 255);
 }
 .leaderboard {
   display: flex;
@@ -91,14 +92,23 @@ canvas {
 .left-button {
   font-size: 16px;
   font-weight: bold;
-  padding: 10px 20px;
+  padding: 20px 20px;
   border: none;
-  background-color: black;
+  background-color: #27251F;
   color: white;
   cursor: pointer;
   border-radius: 15px; /* smooth corners for the button */
 }
-
+.left-button:hover {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 20px 20px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.594);
+  color: white;
+  cursor: pointer;
+  border-radius: 15px; /* smooth corners for the button */
+}
 .logo {
   position: absolute;
   top: 50%;
@@ -162,6 +172,7 @@ canvas {
   background-color: #27251F; /* McDonald's Dark Brown */
   color: #FFC72C; /* McDonald's Yellow */
   font-size: 1.1em; /* Increased font size */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.588);
 }
 
 .player-row {
@@ -179,23 +190,25 @@ canvas {
   border: 2px solid gold;
   background-color: gold;
   color: #27251F; /* McDonald's Dark Brown */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.588);
 }
 
 .silver {
   border: 2px solid silver;
   background-color: silver;
   color: #27251F; /* McDonald's Dark Brown */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.588);
 }
 
 .bronze {
   border: 2px solid #CD7F32;
   background-color: #CD7F32;
   color: #27251F; /* McDonald's Dark Brown */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.588);
 }
 .welcome-wrapper {
-  background-color: #27251F; /* McDonald's Yellow with low opacity */
+  background-color: rgba(39, 37, 31, 0.5);
   border-radius: 15px; /* Rounded corners */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
   margin-top: 7vh; /* 5% of the viewport height */
   width: 100%;
   padding: 0.5em;
@@ -204,13 +217,13 @@ canvas {
   align-items: center;
   justify-content: center;
   height: 20%;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.588);
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {  
   .welcome-wrapper {
     margin-top: 3vh; /* 10% of the viewport height */
   }
 }
-
 .leaderboard-welcome {
   font-size: 1.4em;
   color: #ffffff; /* McDonald's Dark Brown */
@@ -229,7 +242,6 @@ canvas {
 }
 
 /* Start Screen */
-
 .startscreen-container {
   display: flex;
   flex-direction: column;
@@ -239,7 +251,7 @@ canvas {
   background-image: url("/startscreen.png");
   background-size: cover;
   background-repeat: no-repeat;
-  width: 56.25vh; /* 9:16 aspect ratio = width of 56.25% of the viewport height */
+  width: 56.25vh;
   height: 100vh;
   box-sizing: border-box;
   padding: 1rem;
@@ -251,7 +263,6 @@ canvas {
   width: 100vw;
   height: 100vh;
 }
-
 .startscreen-button {
   margin: 1em;
   padding: 1em;
@@ -261,9 +272,37 @@ canvas {
   border: none;
   border-radius: 5px;
   text-align: center;
-  width: 60%; /* adjust to fit your needs */
 }
 .startscreen-button:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.469);
+}
+.startgame-button {
+  width: 60%; /* adjust to fit your needs */
+}
+.buttons-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.leaderboard-button, .shop-button {
+  width: 100%; /* adjust to fit your needs */
+}
+
+
+/* Loader */
+
+.loader {
+  margin: 0 auto;
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #FFC72C;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
