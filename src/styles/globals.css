@@ -52,43 +52,205 @@ canvas {
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
-/*
-.pause-btn {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 10;
-  background-color: white;
-  font-size: 18px;
-  padding: 10px 15px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
+.leaderboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background-color: black;
 }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  background-image: url(/leaderboard-bg.png);
+  background-size: cover; /* This line ensures the image covers the entire container */
+  background-repeat: no-repeat; /* This line ensures the image does not repeat */
+  max-width: 56.25vh; /* 9:16 aspect ratio = width of 56.25% of the viewport height */
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  box-sizing: border-box;
+  padding: 1rem;
+}
+
+.navbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  position: relative;
+}
+
+.left-button {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  background-color: black;
   color: white;
+  cursor: pointer;
+  border-radius: 15px; /* smooth corners for the button */
+}
+
+.logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.header-row,
+.player-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  border-radius: 8px; /* smooth corners for the rows */
+  overflow: hidden;
+  margin-top: 8px; /* margin between rows */
+}
+.cell {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 15px; /* Rounded corners */
+  background: linear-gradient(45deg, #FFC72C, #DA291C); /* Gradient background */
+  color: #27251F; /* McDonald's Dark Brown */
+  font-weight: bold;
+  font-size: 1.1em; /* Increased font size */
+  box-shadow: 0px 10px 15px rgba(0,0,0,0.1); /* Box shadow */
+  transition: all 0.3s ease-in-out;
+}
+
+.cell:hover {
+  box-shadow: 0px 15px 20px rgba(0,0,0,0.2); /* Increased box shadow on hover */
+  transform: scale(1.05); /* Slightly scale cell on hover */
+}
+.header-row, .player-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%; /* Reduce width to 90% of the container */
+  margin-left: auto; /* Center align the row */
+  margin-right: auto; /* Center align the row */
+  padding: 10px;
+  border-radius: 15px; /* Rounded corners */
+  font-weight: bold;
+  box-shadow: 0px 10px 15px rgba(0,0,0,0.1); /* Box shadow */
+  margin-bottom: 8px; /* margin between rows */
+}
+
+.header-row {
+  background-color: #27251F; /* McDonald's Dark Brown */
+  color: #FFC72C; /* McDonald's Yellow */
+  font-size: 1.1em; /* Increased font size */
+}
+
+.player-row {
+  border: 2px solid #27251F; /* McDonald's Dark Brown */
+  font-size: 1em; /* Standard font size */
+}
+
+.header-row div, .player-row div {
+  overflow: hidden; /* Prevents content from being displayed outside the div */
+  text-overflow: ellipsis; /* Adds an ellipsis when the content overflows */
+  white-space: nowrap; /* Prevents the content from wrapping to the next line */
+}
+
+.gold {
+  border: 2px solid gold;
+  background-color: gold;
+  color: #27251F; /* McDonald's Dark Brown */
+}
+
+.silver {
+  border: 2px solid silver;
+  background-color: silver;
+  color: #27251F; /* McDonald's Dark Brown */
+}
+
+.bronze {
+  border: 2px solid #CD7F32;
+  background-color: #CD7F32;
+  color: #27251F; /* McDonald's Dark Brown */
+}
+.welcome-wrapper {
+  background-color: rgba(28, 41, 39, 0.151); /* McDonald's Yellow with low opacity */
+  border-radius: 15px; /* Rounded corners */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  margin-top: 8vh; /* 5% of the viewport height */
+  width: 90%;
+  padding: 1em;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 5;
+}
+.leaderboard-welcome {
+  font-size: 1.8em;
+  color: #27251F; /* McDonald's Dark Brown */
+  text-align: center;
+  margin-bottom: 1em;
+}
+.rank-message {
+  font-size: 1.2em;
+  color: #27251F; /* McDonald's Dark Brown */
+  text-align: center;
+  padding: 1em;
+  background-color: rgba(255, 199, 44, 0.143); /* McDonald's Yellow with low opacity */
+  border: 2px solid #FFC72C; /* McDonald's Yellow */
+  border-radius: 15px; /* Rounded corners */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+.startscreen-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  background-image: url("/startscreen.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 56.25vh; /* 9:16 aspect ratio = width of 56.25% of the viewport height */
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 1rem;
+}
+.startscreen-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
 }
 
-.overlay button {
-  background-color: white;
-  color: black;
-  font-size: 18px;
-  padding: 10px 20px;
-  margin-top: 10px;
+.startscreen-button {
+  margin: 1em;
+  padding: 1em;
+  font-size: 1.5em;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
   border: none;
-  cursor: pointer;
   border-radius: 5px;
+  text-align: center;
+  width: 60%; /* adjust to fit your needs */
 }
-*/
+.startscreen-button:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.7);
+}
