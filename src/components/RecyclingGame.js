@@ -28,7 +28,7 @@ const RecyclingGame = () => {
     }
 
     function resizeCanvas() {
-      const targetWidth = 9;
+      const targetWidth = 10;
       const targetHeight = 16;
       const targetRatio = targetWidth / targetHeight;
 
