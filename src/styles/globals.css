@@ -88,11 +88,11 @@ canvas {
   width: 100%; /* Set width to 100% to span the entire width of the viewport */
   height: 100px; /* Adjust this value to set the height of the navbar */
   padding: 10px;
-  position: sticky; /* Set the position to sticky to keep it in view while scrolling */
-  top: 0; /* Align the navbar to the top of the viewport */
-  z-index: 1000; /* Set a high z-index to ensure the navbar stays above other elements */
-  background-color: #B1E8F0; /* Black background */
-  color: #fff; /* White text */
+  position: sticky;
+  top: 0; 
+  z-index: 1000; 
+  background-color: #B1E8F0; 
+  color: #fff; 
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.367); /* Box shadow */
   transition: all 0.3s ease-in-out;
   border-top-left-radius: 0;
@@ -109,15 +109,13 @@ canvas {
   background-color: #27251F;
   color: white;
   cursor: pointer;
-  border-radius: 15px; /* smooth corners for the button */
-  margin-left: 10px; /* Add some space to the left */
+  border-radius: 15px;
 }
 .left-button:hover {
   background-color: rgba(0, 0, 0, 0.594);
 }
 
 .right-button {
-  /* Style this button similarly to the .left-button */
   font-size: 16px;
   font-weight: bold;
   padding: 20px 30px;
@@ -145,17 +143,18 @@ canvas {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(234, 234, 234, 0.762);
   display: flex;
   justify-content: center;
   align-items: center;
   color: #fff;
   text-align: center;
   font-size: 2em;
-  padding: 2em;
+  padding: 0.5em;
   max-width: 60.25vh;
   margin: auto;
   box-sizing: border-box;
+  backdrop-filter: blur(4px);
 }
 
 .logo {
@@ -178,7 +177,7 @@ canvas {
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  border-radius: 8px; /* smooth corners for the rows */
+  border-radius: 8px;
   overflow: hidden;
   margin-top: 8px; /* margin between rows */
 }
@@ -188,8 +187,8 @@ canvas {
   justify-content: center;
   align-items: center;
   padding: 10px;
-  border-radius: 15px; /* Rounded corners */
-  background: linear-gradient(45deg, #FFC72C, #DA291C); /* Gradient background */
+  border-radius: 15px; 
+  background: linear-gradient(45deg, #FFC72C, #DA291C); 
   color: #27251F; /* McDonald's Dark Brown */
   font-weight: bold;
   font-size: 1.1em; /* Increased font size */
@@ -219,13 +218,13 @@ canvas {
 .header-row {
   background-color: #27251F; /* McDonald's Dark Brown */
   color: #FFC72C; /* McDonald's Yellow */
-  font-size: 1.1em; /* Increased font size */
+  font-size: 1.1em;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.588);
 }
 
 .player-row {
   border: 2px solid #27251F; /* McDonald's Dark Brown */
-  font-size: 1em; /* Standard font size */
+  font-size: 1em; 
 }
 
 .header-row div, .player-row div {
@@ -236,27 +235,27 @@ canvas {
 
 .gold {
   border: 2px solid gold;
-  background-color: gold;
+  background-color: rgba(255, 217, 0, 0.917);
   color: #27251F; /* McDonald's Dark Brown */
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.588);
 }
 
 .silver {
   border: 2px solid silver;
-  background-color: silver;
+  background-color: rgba(192, 192, 192, 0.917);
   color: #27251F; /* McDonald's Dark Brown */
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.588);
 }
 
 .bronze {
   border: 2px solid #CD7F32;
-  background-color: #CD7F32;
+  background-color: #cd8032ea;
   color: #27251F; /* McDonald's Dark Brown */
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.588);
 }
 .welcome-wrapper {
   background-color: rgba(39, 37, 31, 0.5);
-  border-radius: 15px; /* Rounded corners */
+  border-radius: 15px; 
   margin-top: 7vh; /* 5% of the viewport height */
   width: 100%;
   padding: 0.5em;
@@ -265,7 +264,7 @@ canvas {
   align-items: center;
   justify-content: center;
   height: 20%;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.588);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.588);
 }
 @media screen and (max-width: 768px) {  
   .welcome-wrapper {
@@ -274,19 +273,32 @@ canvas {
 }
 .leaderboard-welcome {
   font-size: 1.4em;
-  color: #ffffff; /* McDonald's Dark Brown */
+  color: #ffffff; 
   text-align: center;
   margin-bottom: 1em;
 }
 .rank-message {
   font-size: 1.2em;
-  color: #ffffff; /* McDonald's Dark Brown */
+  color: #ffffff; 
   text-align: center;
   padding: 1em;
-  background-color: rgba(255, 199, 44, 0.143); /* McDonald's Yellow with low opacity */
+  background-color: rgba(255, 199, 44, 0.143); 
   border: 2px solid #FFC72C; /* McDonald's Yellow */
-  border-radius: 15px; /* Rounded corners */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  border-radius: 15px; 
+  box-sizing: border-box; 
+}
+.view-button {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 20px 20px;
+  border: none;
+  background-color: #27251F;
+  color: white;
+  cursor: pointer;
+  border-radius: 15px;
+}
+.view-button:hover {
+  background-color: rgba(0, 0, 0, 0.594);
 }
 
 /* Start Screen */
@@ -302,7 +314,6 @@ canvas {
   background-repeat: no-repeat;
   height: 100vh;
   box-sizing: border-box;
-  padding: 1rem;
 }
 .startscreen-wrapper {
   display: flex;
@@ -326,7 +337,7 @@ canvas {
   background-color: rgba(0, 0, 0, 0.469);
 }
 .startgame-button {
-  width: 60%; /* adjust to fit your needs */
+  width: 60%;
 }
 .buttons-row {
   display: flex;
@@ -334,7 +345,7 @@ canvas {
   width: 100%;
 }
 .leaderboard-button, .shop-button {
-  width: 100%; /* adjust to fit your needs */
+  width: 100%;
 }
 
 
@@ -353,4 +364,90 @@ canvas {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+/* Game Info */
+.game-info-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1vw;
+  margin: 20vh auto 0;
+  height: 75vh;
+  width: 90vw; /* 90% of viewport width */
+  box-sizing: border-box;
+  color: #fff;
+  background: #ffffff90;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.202);
+}
+
+.game-info-item {
+  text-align: left;
+}
+
+.game-info-title-box {
+  display: flex;
+  align-items: center;
+  background-color: #E54431;
+  border-radius: 5px;
+  padding: 0.5vw;
+}
+
+
+.game-info-title {
+  font-size: 2.5vw; 
+  font-weight: bold;
+}
+
+.game-info-description-box {
+  background-color: #FFCE55;
+  border-radius: 5px;
+  margin-top: 0.5vw;
+  margin-bottom: 0.5vw;
+  padding: 0.2vw;
+  padding-left: 0.5vw;
+}
+
+.game-info-description {
+  font-size: 2vw; /* relative to viewport width */
+  color:rgba(0, 0, 0, 0.718);
+}
+
+/* Media Query for smaller screens */
+@media screen and (max-width: 600px) {
+  .game-info-container {
+    padding: 4vw;
+  }
+
+  .game-info-title {
+    font-size: 4vw;
+  }
+
+  .game-info-description {
+    font-size: 3.5vw;
+  }
+  .game-info-description-box {
+    background-color: #FFCE55;
+    border-radius: 5px;
+    margin-top: 0.5vw;
+    margin-bottom: 8vw;
+    padding-left: 0.5vw;
+  }
+  
+}
+
+/* Media Query for larger screens */
+@media screen and (min-width: 601px) {
+  .game-info-title {
+    font-size: 1.5vw; /* smaller font size on larger screens */
+  }
+
+  .game-info-description {
+    font-size: 1.25vw; /* smaller font size on larger screens */
+  }
+}
+.game-info-image {
+  width: 20px;  
+  height: 20px; 
+  margin-right: 10px; 
+  margin-left: 10px;
 }

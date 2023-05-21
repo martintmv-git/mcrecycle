@@ -4,6 +4,7 @@ import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import GameInfo from "../components/GameInfo";
 import { FaQuestion, FaTimes } from "react-icons/fa";
 
 const Leaderboard = () => {
@@ -48,7 +49,7 @@ const Leaderboard = () => {
         </div>
         {isOverlayOpen && (
           <div className="overlay" onClick={handleOverlayToggle}>
-            Explanation of the leaderboard system
+      <GameInfo />
           </div>
         )}
         {user && (
@@ -82,7 +83,7 @@ const Leaderboard = () => {
             })
           )}
           <hr></hr>
-          <button className="left-button">View All</button>
+          <button className="view-button">View All</button>
         </div>
       </div>
     </div>
