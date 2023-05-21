@@ -1,7 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { FaHome, FaMusic } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 const RecyclingGame = () => {
   const canvasRef = useRef(null);
+
+  const [homeButtonActive, setHomeButtonActive] = useState(true);
+  const [musicButtonActive, setMusicButtonActive] = useState(true);
+
+  const router = useRouter();
+
+  function handleHomeClick() {
+    router.reload();
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -403,9 +414,15 @@ const RecyclingGame = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   return (
-    <>
-<canvas ref={canvasRef} id="canvas" style={{ width: '60.25vh', height: 'auto' }} />
-    </>
+    <div className="game-container">
+      <canvas ref={canvasRef} className="game-canvas" />
+      <div className={`game-button game-home-button ${homeButtonActive ? "" : "game-button-off"}`} onClick={() => handleHomeClick(!homeButtonActive)}>
+        <FaHome className="game-icon" />
+      </div>
+      <div className={`game-button game-music-button ${musicButtonActive ? "" : "game-button-off"}`} onClick={() => setMusicButtonActive(!musicButtonActive)}>
+        <FaMusic className="game-icon" />
+      </div>
+    </div>
   );
 };
 
