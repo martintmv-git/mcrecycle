@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Helvetica", Arial, sans-serif;
+  box-sizing: border-box;
   overflow-y: hidden;
 }
 
@@ -63,31 +64,39 @@ canvas {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  width: 100%;
+  width: 100%; /* full width of the screen */
   background-color: rgb(255, 255, 255);
 }
+
 .leaderboard {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: white;
   background-image: url(/leaderboard-bg.png);
-  background-size: cover; /* This line ensures the image covers the entire container */
-  background-repeat: no-repeat; /* This line ensures the image does not repeat */
-  max-width: 56.25vh; /* 9:16 aspect ratio = width of 56.25% of the viewport height */
-  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 56.25vh; /* Adjusted width to match 9:16 aspect ratio */
   height: 100%;
-  box-sizing: border-box;
   padding: 1rem;
 }
 
 .navbar {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 102%;
+  height: 100px; /* Adjust this value to set the height of the navbar */
   padding: 10px;
   position: relative;
+  background-color: #B1E8F0; /* Black background */
+  color: #fff; /* White text */
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.367); /* Box shadow */
+  transition: all 0.3s ease-in-out;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .left-button {
@@ -99,8 +108,25 @@ canvas {
   color: white;
   cursor: pointer;
   border-radius: 15px; /* smooth corners for the button */
+  margin-left: 10px; /* Add some space to the left */
 }
 .left-button:hover {
+  background-color: rgba(0, 0, 0, 0.594);
+}
+
+.right-button {
+  /* Style this button similarly to the .left-button */
+  font-size: 16px;
+  font-weight: bold;
+  padding: 20px 20px;
+  border: none;
+  background-color: #27251F;
+  color: white;
+  cursor: pointer;
+  border-radius: 15px;
+}
+
+.right-button:hover {
   font-size: 16px;
   font-weight: bold;
   padding: 20px 20px;
@@ -108,15 +134,34 @@ canvas {
   background-color: rgba(0, 0, 0, 0.594);
   color: white;
   cursor: pointer;
-  border-radius: 15px; /* smooth corners for the button */
+  border-radius: 15px;
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-align: center;
+  font-size: 2em;
+  padding: 2em;
+  max-width: 56.25vh;
+  margin: auto;
+  box-sizing: border-box;
+}
+
 .logo {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
 .table {
   display: flex;
   flex-direction: column;
@@ -245,6 +290,7 @@ canvas {
 /* Start Screen */
 .startscreen-container {
   display: flex;
+  width: 56.25vh;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -252,7 +298,6 @@ canvas {
   background-image: url("/startscreen.png");
   background-size: cover;
   background-repeat: no-repeat;
-  width: 56.25vh;
   height: 100vh;
   box-sizing: border-box;
   padding: 1rem;

@@ -1,13 +1,16 @@
+// Leaderboard.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { FaQuestion, FaTimes } from "react-icons/fa";
 
 const Leaderboard = () => {
   const { user } = useUser();
   const [players, setPlayers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // new state for loading status
+  const [isLoading, setIsLoading] = useState(true);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -15,20 +18,18 @@ const Leaderboard = () => {
   }, []);
 
   const fetchPlayers = async () => {
-    try {
-      const response = await axios.get("/api/players");
-      const sortedPlayers = response.data.sort(
-        (a, b) => b.points - a.points
-      );
-      setPlayers(sortedPlayers);
-      setIsLoading(false); // data has been fetched, so set loading to false
-    } catch (error) {
-      console.error("Error fetching players:", error);
-    }
+    const response = await axios.get("/api/players");
+    const sortedPlayers = response.data.sort((a, b) => b.points - a.points);
+    setPlayers(sortedPlayers);
+    setIsLoading(false);
   };
 
   const handleLeftButtonClick = () => {
     router.push("/");
+  };
+
+  const handleOverlayToggle = () => {
+    setIsOverlayOpen(!isOverlayOpen);
   };
 
   return (
@@ -38,27 +39,24 @@ const Leaderboard = () => {
           <button className="left-button" onClick={handleLeftButtonClick}>
             Back
           </button>
+          <button className="right-button" onClick={handleOverlayToggle}>
+            {isOverlayOpen ? <FaTimes /> : <FaQuestion />}
+          </button>
           <div className="logo">
-            <Image
-              src="/leaderboard.png"
-              alt="Leaderboard logo"
-              width={152}
-              height={129}
-            />
+            <Image src="/leaderboard.png" alt="Leaderboard logo" width={152} height={129} />
           </div>
         </div>
-        <br></br>
-        {user && (
-          <div className="welcome-wrapper">
-            <h2 className="leaderboard-welcome">
-              👋 Welcome, {user.fullName}!
-            </h2>
-            <h3 className="rank-message">
-              Your current rank is {1}
-            </h3>
+        {isOverlayOpen && (
+          <div className="overlay" onClick={handleOverlayToggle}>
+            Explanation of the leaderboard system
           </div>
         )}
-
+        {user && (
+          <div className="welcome-wrapper">
+            <h2 className="leaderboard-welcome">👋 Welcome, {user.fullName}!</h2>
+            <h3 className="rank-message">Your current rank is {1}</h3>
+          </div>
+        )}
         <div className="table">
           <div className="header-row">
             <div>RANK</div>
@@ -66,7 +64,6 @@ const Leaderboard = () => {
             <div>POINTS</div>
           </div>
           <hr></hr>
-          {/* Conditionally render loader or player data */}
           {isLoading ? (
             <div className="loader"></div>
           ) : (
@@ -85,9 +82,7 @@ const Leaderboard = () => {
             })
           )}
           <hr></hr>
-          <button className="left-button">
-            View All
-          </button>
+          <button className="left-button">View All</button>
         </div>
       </div>
     </div>
