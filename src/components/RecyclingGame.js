@@ -13,6 +13,10 @@ const RecyclingGame = () => {
     let lives = startLives;
     let spawnInterval;
 
+    const handleResize = () => {
+      document.body.style.backgroundColor = window.innerWidth < 768 ? backgroundColors[currentBackground] : "";
+    }
+
     function drawScoreLives() {
       ctx.font = "bold 60px Arial"; // Increase font size by 50%
       ctx.fillStyle = "white";
@@ -123,10 +127,24 @@ const RecyclingGame = () => {
       new Background("background-8.png"),
     ];
 
+    const backgroundColors = [
+      "#7C8B00",
+      "#C8D745",
+      "#C8D745",
+      "#839300",
+      "#718000",
+      "#718000",
+      "#718000",
+      "#718000",
+    ];
+
     let currentBackground = 0;
 
     function drawBackground() {
       backgroundImages[currentBackground].draw();
+      if (window.innerWidth < 768) {
+        document.body.style.backgroundColor = backgroundColors[currentBackground];
+      }
     }
 
     class Bucket {
@@ -236,6 +254,8 @@ const RecyclingGame = () => {
 
     function startGame() {
       resizeCanvas();
+  handleResize();
+  window.addEventListener('resize', handleResize);
 
       const bucketWidth = 105 * 1.7;
       const bucketHeight = 105 * 1.7;
@@ -380,10 +400,11 @@ const RecyclingGame = () => {
     canvas.addEventListener("touchstart", (event) => handlePointer(event, "down"), false);
     canvas.addEventListener("touchmove", (event) => handlePointer(event, "move"), false);
     canvas.addEventListener("touchend", (event) => handlePointer(event, "up"), false);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
   return (
     <>
-      <canvas ref={canvasRef} id="canvas" />
+<canvas ref={canvasRef} id="canvas" style={{ width: '60.25vh', height: 'auto' }} />
     </>
   );
 };
