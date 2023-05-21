@@ -461,6 +461,7 @@ canvas {
 
 .game-canvas {
   position: absolute;
+  width: 60.25vh;
   top: 0;
   left: 0;
   width: 100%;

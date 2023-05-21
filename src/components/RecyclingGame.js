@@ -17,6 +17,7 @@ const RecyclingGame = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
+    document.body.style.overflowX = "hidden";
 
     const startScore = 0;
     const startLives = 3;
@@ -423,7 +424,7 @@ const RecyclingGame = () => {
         <FaMusic className="game-icon" />
       </div>
     </div>
-  );
+  );  
 };
 
 export default RecyclingGame;
