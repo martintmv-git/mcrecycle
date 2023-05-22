@@ -268,7 +268,6 @@ const RecyclingGame = () => {
       resizeCanvas();
   handleResize();
   window.addEventListener('resize', handleResize);
-  window.addEventListener('load', resizeCanvas);
 
       const bucketWidth = 105 * 1.7;
       const bucketHeight = 105 * 1.7;
@@ -378,7 +377,6 @@ const RecyclingGame = () => {
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     window.addEventListener("resize", resizeCanvas);
-    window.addEventListener("load", resizeCanvas);
 
     function isTouchDevice() {
       return (
@@ -414,10 +412,7 @@ const RecyclingGame = () => {
     canvas.addEventListener("touchstart", (event) => handlePointer(event, "down"), false);
     canvas.addEventListener("touchmove", (event) => handlePointer(event, "move"), false);
     canvas.addEventListener("touchend", (event) => handlePointer(event, "up"), false);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('load', resizeCanvas); // Add this line
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
   return (
     <div className="game-container">
@@ -429,7 +424,7 @@ const RecyclingGame = () => {
         <FaMusic className="game-icon" />
       </div>
     </div>
-  );  
+  );
 };
 
 export default RecyclingGame;
