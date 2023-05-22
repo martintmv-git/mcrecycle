@@ -452,6 +452,8 @@ canvas {
   margin-right: 10px; 
   margin-left: 10px;
 }
+
+/* Game Buttons */
 .game-container {
   position: relative;
   width: 60.25vh;
