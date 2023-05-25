@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       const { error } = await supabase
         .from("gameData")
         .insert([{ points: 0, name: clerkName, clerkId: clerkUserId }]);
-
+      console.log(clerkName, "created")
       if (error) {
         console.error("Error inserting into database:", error);
         return res
