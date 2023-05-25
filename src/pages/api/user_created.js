@@ -3,7 +3,7 @@ import { insertData } from "../../lib/supabaseClient";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const { user } = req.body;
+    const { user } = event.data.first_name;
 
     try {
       await insertData(user.first_name);
