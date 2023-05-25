@@ -95,8 +95,8 @@ export async function fetchSingleItemData(itemId) {
   return data ? data[0] : null;
 }
 
-export async function insertData(name, points) {
-  const { error } = await supabase.from("gameData").insert({ name, points });
+export async function insertData(name) {
+  const { error } = await supabase.from("gameData").insert({ name });
   if (error) {
     console.error(error);
   } else {
