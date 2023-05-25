@@ -1,5 +1,6 @@
 // pages/api/user_created.js
 import { insertData } from "../../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
