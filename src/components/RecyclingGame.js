@@ -7,12 +7,15 @@ const RecyclingGame = () => {
 
   const [homeButtonActive, setHomeButtonActive] = useState(true);
   const [musicButtonActive, setMusicButtonActive] = useState(true);
+  const [gameOver, setGameOver] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
+
 
   const router = useRouter();
 
   function handleHomeClick() {
     router.reload();
-  }
+  } 
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -30,7 +33,7 @@ const RecyclingGame = () => {
     }
 
     function drawScoreLives() {
-      ctx.font = "bold 60px Arial"; // Increase font size by 50%
+      ctx.font = "bold 60px Helvetica"; // Increase font size by 50%
       ctx.fillStyle = "white";
       ctx.textBaseline = "top";
       ctx.textAlign = "right";
@@ -204,6 +207,13 @@ const RecyclingGame = () => {
       return { image };
     });
 
+    const loadedgamescreen = [
+      "/gameoverbox.png"
+    ].map((imageSrc) => {
+      const image = createImage(imageSrc);
+      return { image };
+    });
+
     class FallingItem {
       constructor(x, y, width, height, speed, image) {
         this.x = x;
@@ -260,33 +270,44 @@ const RecyclingGame = () => {
     function decrementLives() {
       lives--;
       if (lives <= 0) {
-        resetGame();
+        gameOver();
       }
     }
 
     function startGame() {
       resizeCanvas();
-  handleResize();
-  window.addEventListener('resize', handleResize);
-
+      handleResize();
+      window.addEventListener('resize', handleResize);
+    
       const bucketWidth = 105 * 1.7;
       const bucketHeight = 105 * 1.7;
-
+    
       bucket = new Bucket(
         canvas,
         canvas.height - bucketHeight - 30, // Increase bottom margin by 50%
         bucketWidth,
         bucketHeight
       );
-      
-
+    
       gameLoop();
-
+    
       // Check if the document is visible before starting to spawn items
       if (!document.hidden) {
         startSpawningItems();
       }
-    }
+    
+      // Handle the visibilitychange event
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          stopSpawningItems();
+        } else {
+          // Only start spawning items if the game is not over
+          if (!gameOver) {
+            startSpawningItems();
+          }
+        }
+      });
+    }    
 
     startGame();
 
@@ -296,7 +317,7 @@ const RecyclingGame = () => {
       bucket.update();
       bucket.draw();
       drawScoreLives();
-
+    
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
         item.update();
@@ -304,13 +325,16 @@ const RecyclingGame = () => {
         if (item.isColliding(bucket)) {
           items.splice(i, 1);
           score += 25;
-
+    
           if (score % 200 === 0) {
             currentBackground = (currentBackground + 1) % backgroundImages.length;
           }
         }
       }
+    
+      drawGameOverScreen();
     }
+    
 
     function gameLoop() {
       update();
@@ -343,14 +367,144 @@ const RecyclingGame = () => {
       keys[event.code] = false;
     });
 
-    function resetGame() {
-      score = startScore;
-      lives = startLives;
+    function gameOver() {
+      // Stop the game
+      stopSpawningItems();
       items.length = 0;
+
+        // Set game over state and final score
+        setGameOver(true);
+        setFinalScore(score);
+    
+      // Display the final score
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      currentBackground = 0;
+      drawBackground();
+      ctx.font = "bold 60px Helvetica";
+      ctx.fillStyle = "white";
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+      ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 60);
+      ctx.fillText("Score: " + score, canvas.width / 2, canvas.height / 2);
+    
+      //listener to click on the canvas to restart the game
+      canvas.addEventListener("click", startGame);
     }
 
+    function drawButton(x, y, width, height, text, callback) {
+      // Create rounded rectangle
+      const radius = 10;
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    
+      // Fill the button
+      ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+      ctx.fill();
+    
+      // Draw the text
+      ctx.font = "bold 50px Helvetica";
+      ctx.fillStyle = "white";
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+      ctx.fillText(text, x + width / 2, y + height / 2);
+    
+      // Click event
+      canvas.addEventListener("click", (event) => {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const offsetX = scaleX * (event.pageX - rect.left);
+        const offsetY = scaleY * (event.pageY - rect.top);
+    
+        if (
+          offsetX >= x &&
+          offsetX <= x + width &&
+          offsetY >= y &&
+          offsetY <= y + height
+        ) {
+          callback();
+        }
+      });
+    }    
+    
+    function drawGameOverScreen() {
+      if (lives <= 0) {
+        // Draw the background box
+        ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+        const boxWidth = canvas.width * 1;
+        const boxHeight = canvas.height * 2;
+        const boxX = (canvas.width - boxWidth) / 2;
+        const boxY = (canvas.height - boxHeight) / 2;
+        ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
+
+    // Find the pre-loaded image
+    const imageObj = loadedgamescreen.find(obj => obj.image.src.includes("/gameoverbox.png"));
+
+    // Draw the image
+    if (imageObj && imageObj.image) {
+      const image = imageObj.image;
+      const imageX = (canvas.width - image.width) / 2;  // centers the image
+      const imageY = (canvas.height - image.height) / 5;  // placing it above the middle
+      ctx.drawImage(image, imageX, imageY);
+    }
+    
+// Draw the "Points earned:" text
+ctx.font = "bold 90px Helvetica";
+ctx.fillStyle = "white";
+ctx.textBaseline = "middle";
+ctx.textAlign = "center";
+ctx.fillText("Points earned:", canvas.width / 2, canvas.height / 3 + 100);
+
+// Draw the score on a separate row
+ctx.font = "bold 60px Helvetica";
+ctx.fillText(score, canvas.width / 2, canvas.height / 3 + 200);
+    
+        drawButton(
+          canvas.width / 2 - 262.5,
+          canvas.height / 2 + 157.5,
+          525,
+          105,
+          "Play again?",
+          () => {
+            lives = startLives;
+            score = startScore;
+            currentBackground = 0;
+            startGame();
+          }
+        );
+    
+        drawButton(
+          canvas.width / 2 - 262.5,
+          canvas.height / 2 + 315, // increased y-coordinate for margin
+          525,
+          105,
+          "Leaderboard",
+          () => {
+            router.push("/leaderboard");
+          }
+        );
+    
+        drawButton(
+          canvas.width / 2 - 262.5,
+          canvas.height / 2 + 472.5, // increased y-coordinate for margin
+          525,
+          105,
+          "Shop",
+          () => {
+            router.push("/shop");
+          }
+        );
+      }
+    }
+    
     function startSpawningItems() {
       if (!spawnInterval) {
         spawnInterval = setInterval(() => {

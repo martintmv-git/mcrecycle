@@ -501,3 +501,38 @@ canvas {
   top: 9vh;
   left: 2vh;
 }
+/* game over screen */
+.game-over-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-over-text {
+  color: #fff;
+  text-align: center;
+}
+
+.game-over-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.game-over-button {
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+}
