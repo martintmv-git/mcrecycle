@@ -9,15 +9,15 @@ export default async function handler(req, res) {
 
   if (event.type === "user.created") {
     // Check if this Clerk user ID already exists in the database
-    // let { data: existingUser, error } = await supabase
-    //   .from("gameData")
-    //   .select("id")
-    //   .eq("clerkId", clerkUserId);
+    let { data: existingUser, error } = await supabase
+      .from("gameData")
+      .select("id")
+      .eq("clerkId", clerkUserId);
 
-    // if (error) {
-    //   console.error("Error reading from database:", error);
-    //   return res.status(500).json({ error: "Failed to read from database", message: error });
-    // }
+    if (error) {
+      console.error("Error reading from database:", error);
+      return res.status(500).json({ error: "Failed to read from database", message: error });
+    }
 
     // If user doesn't exist, insert new record
     if (!existingUser || existingUser.length === 0) {
