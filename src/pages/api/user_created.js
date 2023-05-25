@@ -6,7 +6,9 @@ export default async function handler(req, res) {
     const { user } = req.body.data.first_name;
 
     try {
-      await insertData(user);
+      const { error } = await supabase
+        .from("gameData")
+        .insert([{name: user}]);
       res.status(200).json({ message: "User created successfully." });
     } catch (error) {
       res.status(500).json({ error: "Error creating user.", message: error });
