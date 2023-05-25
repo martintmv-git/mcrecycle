@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         console.error("Error inserting into database:", error);
         return res
           .status(500)
-          .json({ error: "Failed to insert into database" });
+          .json({ error: "Failed to insert into database", message: error });
       }
     }
   }
