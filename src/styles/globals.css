@@ -557,7 +557,9 @@ canvas {
   padding: 20px;
   box-sizing: border-box;
   min-width: 200px;
-  margin-right: 20px; /* Add margin to create space between items */
+  margin-right: 20px;
+  background-size: cover;
+  background-position: center;
 }
 
 .items-list::-webkit-scrollbar {
@@ -620,3 +622,21 @@ canvas {
   margin-bottom: 20px;
   color: #333;
 }
+.menu-deals-header {
+  background-color: #FFC72C;
+  width: 30%;
+  margin: 0 auto;
+  margin-top: 20px;
+  text-align: center;
+  border-radius: 5px;
+  margin-left: 0px;
+  margin-bottom: 20px;
+  color: #333;
+  white-space: nowrap; /* Prevents wrapping onto next line */
+}
+@media (min-width: 768px) {
+  .menu-deals-header {
+    margin-top: 80px; /* You can adjust this to suit your design */
+  }
+}
+

@@ -12,13 +12,13 @@ const Shop = () => {
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
-  const [loadingData, setLoadingData] = useState(true); 
+  const [loadingData, setLoadingData] = useState(true);
   const { user } = useUser();
   const router = useRouter();
 
   useEffect(() => {
     if (user) {
-      setLoadingData(true); 
+      setLoadingData(true);
 
       axios
         .get(`/api/balance?userId=${user.id}`)
@@ -32,12 +32,18 @@ const Shop = () => {
       axios
         .get("/api/items")
         .then((response) => {
-          setItems(response.data);
-          setLoadingData(false); 
+          const updatedItems = response.data.map((item) => {
+            return {
+              ...item,
+              imageUrl: `url-for-image-${item.id}`,
+            };
+          });
+          setItems(updatedItems);
+          setLoadingData(false);
         })
         .catch((error) => {
           console.error("Error fetching items: ", error);
-          setLoadingData(false); 
+          setLoadingData(false);
         });
     }
   }, [user]);
@@ -91,37 +97,39 @@ const Shop = () => {
                 key={item.id}
                 className="item"
                 onClick={() => handleItemClick(item)}
+                style={{ backgroundImage: `url(/item${index + 1}.jpg)` }}
               >
-                <h3>{item.name}</h3>
-                <p>Price: {item.price}</p>
+                <h2>{item.name}</h2>
+                <h3>{item.price} points</h3>
                 {index !== items.length - 1 && (
                   <div style={{ marginRight: "20px" }} />
                 )}
               </div>
             ))}
           </div>
-          <div className="meal-deals-header">
-            <h3>MenuItems</h3>
+          <div className="menu-deals-header">
+            <h3>Menu Items</h3>
           </div>
           <div className="items-list">
-  {loadingData ? (
-    <div className="loader"></div>
-  ) : (
-    items.map((item, index) => (
-      <div
-        key={item.id}
-        className="item"
-        onClick={() => handleItemClick(item)}
-      >
-        <h3>{item.name}</h3>
-        <p>Price: {item.price}</p>
-        {index !== items.length - 1 && (
-          <div style={{ marginRight: "20px" }} />
-        )}
-      </div>
-    ))
-  )}
-</div>
+            {loadingData ? (
+              <div className="loader"></div>
+            ) : (
+              items.map((item, index) => (
+                <div
+                  key={item.id}
+                  className="item"
+                  onClick={() => handleItemClick(item)}
+                  style={{ backgroundImage: `url(/menuitem${index + 1}.jpg)` }}
+                >
+                  <h2>{item.name}</h2>
+                  <h3>{item.price} points</h3>
+                  {index !== items.length - 1 && (
+                    <div style={{ marginRight: "20px" }} />
+                  )}
+                </div>
+              ))
+            )}
+          </div>
         </div>
         {selectedItem && (
           <div className="qr-code">
