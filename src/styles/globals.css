@@ -88,7 +88,7 @@ canvas {
   align-items: center;
   width: 100%; /* Set width to 100% to span the entire width of the viewport */
   height: 100px; /* Adjust this value to set the height of the navbar */
-  padding: 10px;
+  padding: 15px;
   position: sticky;
   top: 0; 
   z-index: 1000; 
@@ -535,4 +535,88 @@ canvas {
   font-size: 1em;
   border: none;
   border-radius: 5px;
+}
+/* menu */
+.items-container {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.items-list {
+  display: flex;
+  white-space: nowrap; /* Prevents wrapping onto next line */
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 155, 155, 0.7) transparent;
+}
+
+.item {
+  border: 1px solid #000;
+  border-radius: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+  min-width: 200px;
+  margin-right: 20px; /* Add margin to create space between items */
+}
+
+.items-list::-webkit-scrollbar {
+  height: 8px;
+}
+
+.items-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.items-list::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  border: 3px solid transparent;
+}
+/* Firefox */
+.items-list {
+  scrollbar-width: thin;
+}
+
+/* Chrome, Edge, and Safari */
+.items-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.items-list::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  border: 3px solid transparent;
+}
+.balance-header {
+  background-color: #DA291C;
+  width: 95%;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 10px;
+  margin-top: 20px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.balance-left {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.balance-right {
+  flex-grow: 1;
+  text-align: right;
+}
+
+.meal-deals-header {
+  background-color: #FFC72C;
+  width: 30%;
+  margin: 0 auto;
+  margin-top: 20px;
+  text-align: center;
+  border-radius: 5px;
+  margin-left: 0px;
+  margin-bottom: 20px;
+  color: #333;
 }
