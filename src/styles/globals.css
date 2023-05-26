@@ -548,7 +548,6 @@ canvas {
   white-space: nowrap; /* Prevents wrapping onto next line */
   overflow-x: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(155, 155, 155, 0.7) transparent;
 }
 
 .item {
