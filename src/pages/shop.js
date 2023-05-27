@@ -49,12 +49,9 @@ const Shop = () => {
   }, [user]);
 
   const handleItemClick = (item) => {
-    if (balance >= item.price) {
-      setSelectedItem(item);
-    } else {
-      alert("You do not have enough points to buy this item.");
-    }
+    router.push(`/item/${item.id}`);
   };
+  
 
   const handleLeftButtonClick = () => {
     router.push("/");
