@@ -51,7 +51,6 @@ const Shop = () => {
   const handleItemClick = (item) => {
     router.push(`/item/${item.id}`);
   };
-  
 
   const handleLeftButtonClick = () => {
     router.push("/");
@@ -86,7 +85,7 @@ const Shop = () => {
         </div>
         <div className="items-container">
           <div className="meal-deals-header">
-            <h3>Meal Deals</h3>
+            <h3>Menu Deals</h3>
           </div>
           <div className="items-list">
             {items.map((item, index) => (
@@ -105,7 +104,7 @@ const Shop = () => {
             ))}
           </div>
           <div className="menu-deals-header">
-            <h3>Menu Items</h3>
+            <h3>Meal Items</h3>
           </div>
           <div className="items-list">
             {loadingData ? (
