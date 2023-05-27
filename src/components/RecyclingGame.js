@@ -4,18 +4,27 @@ import { useRouter } from "next/router";
 
 const RecyclingGame = () => {
   const canvasRef = useRef(null);
+  const audioRef = useRef(new Audio("/music.mp3"));
 
   const [homeButtonActive, setHomeButtonActive] = useState(true);
   const [musicButtonActive, setMusicButtonActive] = useState(true);
   const [gameOver, setGameOver] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
 
-
   const router = useRouter();
 
   function handleHomeClick() {
     router.reload();
-  } 
+  }
+
+  function handleMusicButtonClick() {
+    if (musicButtonActive) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setMusicButtonActive(!musicButtonActive);
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -28,9 +37,16 @@ const RecyclingGame = () => {
     let lives = startLives;
     let spawnInterval;
 
+    // Start playing the audio when the component mounts
+    audioRef.current.autoplay = true;
+    audioRef.current.play().catch((error) => {
+      console.error("Failed to play audio:", error);
+    });
+
     const handleResize = () => {
-      document.body.style.backgroundColor = window.innerWidth < 768 ? backgroundColors[currentBackground] : "";
-    }
+      document.body.style.backgroundColor =
+        window.innerWidth < 768 ? backgroundColors[currentBackground] : "";
+    };
 
     function drawScoreLives() {
       ctx.font = "bold 60px Helvetica"; // Increase font size by 50%
@@ -38,14 +54,17 @@ const RecyclingGame = () => {
       ctx.textBaseline = "top";
       ctx.textAlign = "right";
       ctx.fillText("" + score, canvas.width - 15, 30); // Increase right margin by 50% and top margin by 50%
-    
+
       const heartSize = 52.5; // Increase heart size by 50%
       const heartSpacing = 33.75; // Increase heart spacing by 50%
       for (let i = 0; i < lives; i++) {
-        ctx.fillText("❤️", canvas.width - 15 - i * (heartSize + heartSpacing), 105); // Increase right margin by 50% and top margin by 50%
+        ctx.fillText(
+          "❤️",
+          canvas.width - 15 - i * (heartSize + heartSpacing),
+          105
+        ); // Increase right margin by 50% and top margin by 50%
       }
     }
-    
 
     function resizeCanvas() {
       const targetWidth = 9.5;
@@ -75,13 +94,17 @@ const RecyclingGame = () => {
     let isMouseDown = false;
 
     function getEventClientX(event) {
-      return event.type.startsWith("touch") ? event.touches[0].clientX : event.clientX;
+      return event.type.startsWith("touch")
+        ? event.touches[0].clientX
+        : event.clientX;
     }
 
     function getEventClientY(event) {
-      return event.type.startsWith("touch") ? event.touches[0].clientY : event.clientY;
+      return event.type.startsWith("touch")
+        ? event.touches[0].clientY
+        : event.clientY;
     }
-    
+
     function handlePointer(event, action) {
       if (isTouchDevice()) {
         event.preventDefault();
@@ -93,10 +116,17 @@ const RecyclingGame = () => {
             touchStartX = x;
             touchStartBucketX = bucket.x;
           }
-        } else if (action === "move" && bucket && bucket.loaded && isMouseDown) {
+        } else if (
+          action === "move" &&
+          bucket &&
+          bucket.loaded &&
+          isMouseDown
+        ) {
           const deltaX = getEventClientX(event) - touchStartX;
-          bucket.x = touchStartBucketX + deltaX * (canvas.width / parseFloat(canvas.style.width));
-    
+          bucket.x =
+            touchStartBucketX +
+            deltaX * (canvas.width / parseFloat(canvas.style.width));
+
           if (bucket.x < 0) {
             bucket.x = 0;
           } else if (bucket.x > canvas.width - bucket.width) {
@@ -107,7 +137,6 @@ const RecyclingGame = () => {
         }
       }
     }
-    
 
     function createImage(src, onload) {
       const image = new Image();
@@ -158,7 +187,8 @@ const RecyclingGame = () => {
     function drawBackground() {
       backgroundImages[currentBackground].draw();
       if (window.innerWidth < 768) {
-        document.body.style.backgroundColor = backgroundColors[currentBackground];
+        document.body.style.backgroundColor =
+          backgroundColors[currentBackground];
       }
     }
 
@@ -174,7 +204,7 @@ const RecyclingGame = () => {
           this.loaded = true;
         });
       }
-    
+
       draw() {
         if (this.loaded) {
           const aspectRatio = this.image.width / this.image.height;
@@ -182,19 +212,23 @@ const RecyclingGame = () => {
           ctx.drawImage(this.image, this.x, this.y, scaledWidth, this.height);
         }
       }
-    
+
       update() {
         moveBucket();
       }
-    
+
       isTouched(x, y) {
         const scaleFactor = parseFloat(canvas.style.width) / canvas.width;
         const touchX = x / scaleFactor;
         const touchY = y / scaleFactor;
-        return touchX >= this.x && touchX <= this.x + this.width && touchY >= this.y && touchY <= this.y + this.height;
+        return (
+          touchX >= this.x &&
+          touchX <= this.x + this.width &&
+          touchY >= this.y &&
+          touchY <= this.y + this.height
+        );
       }
     }
-    
 
     const itemImages = [
       "/burger.png",
@@ -207,9 +241,7 @@ const RecyclingGame = () => {
       return { image };
     });
 
-    const loadedgamescreen = [
-      "/gameoverbox.png"
-    ].map((imageSrc) => {
+    const loadedgamescreen = ["/gameoverbox.png"].map((imageSrc) => {
       const image = createImage(imageSrc);
       return { image };
     });
@@ -262,7 +294,8 @@ const RecyclingGame = () => {
       const x = Math.random() * (canvas.width - width);
       const y = 0 - height;
       let speed = 10 + Math.random() * 1.5 + Math.floor(score / 150) * 3;
-      const image = itemImages[Math.floor(Math.random() * itemImages.length)].image;
+      const image =
+        itemImages[Math.floor(Math.random() * itemImages.length)].image;
 
       const item = new FallingItem(x, y, width, height, speed, image);
     }
@@ -277,27 +310,27 @@ const RecyclingGame = () => {
     function startGame() {
       resizeCanvas();
       handleResize();
-      window.addEventListener('resize', handleResize);
-    
+      window.addEventListener("resize", handleResize);
+
       const bucketWidth = 105 * 1.7;
       const bucketHeight = 105 * 1.7;
-    
+
       bucket = new Bucket(
         canvas,
         canvas.height - bucketHeight - 30, // Increase bottom margin by 50%
         bucketWidth,
         bucketHeight
       );
-    
+
       gameLoop();
-    
+
       // Check if the document is visible before starting to spawn items
       if (!document.hidden) {
         startSpawningItems();
       }
-    
+
       // Handle the visibilitychange event
-      document.addEventListener('visibilitychange', () => {
+      document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
           stopSpawningItems();
         } else {
@@ -307,17 +340,17 @@ const RecyclingGame = () => {
           }
         }
       });
-    }    
+    }
 
     startGame();
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawBackground ();
+      drawBackground();
       bucket.update();
       bucket.draw();
       drawScoreLives();
-    
+
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
         item.update();
@@ -325,16 +358,16 @@ const RecyclingGame = () => {
         if (item.isColliding(bucket)) {
           items.splice(i, 1);
           score += 25;
-    
+
           if (score % 200 === 0) {
-            currentBackground = (currentBackground + 1) % backgroundImages.length;
+            currentBackground =
+              (currentBackground + 1) % backgroundImages.length;
           }
         }
       }
-    
+
       drawGameOverScreen();
     }
-    
 
     function gameLoop() {
       update();
@@ -372,10 +405,10 @@ const RecyclingGame = () => {
       stopSpawningItems();
       items.length = 0;
 
-        // Set game over state and final score
-        setGameOver(true);
-        setFinalScore(score);
-    
+      // Set game over state and final score
+      setGameOver(true);
+      setFinalScore(score);
+
       // Display the final score
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBackground();
@@ -385,7 +418,7 @@ const RecyclingGame = () => {
       ctx.textAlign = "center";
       ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 60);
       ctx.fillText("Score: " + score, canvas.width / 2, canvas.height / 2);
-    
+
       //listener to click on the canvas to restart the game
       canvas.addEventListener("click", startGame);
     }
@@ -398,24 +431,29 @@ const RecyclingGame = () => {
       ctx.lineTo(x + width - radius, y);
       ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
       ctx.lineTo(x + width, y + height - radius);
-      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.quadraticCurveTo(
+        x + width,
+        y + height,
+        x + width - radius,
+        y + height
+      );
       ctx.lineTo(x + radius, y + height);
       ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
       ctx.lineTo(x, y + radius);
       ctx.quadraticCurveTo(x, y, x + radius, y);
       ctx.closePath();
-    
+
       // Fill the button
       ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
       ctx.fill();
-    
+
       // Draw the text
       ctx.font = "bold 50px Helvetica";
       ctx.fillStyle = "white";
       ctx.textBaseline = "middle";
       ctx.textAlign = "center";
       ctx.fillText(text, x + width / 2, y + height / 2);
-    
+
       // Click event
       canvas.addEventListener("click", (event) => {
         const rect = canvas.getBoundingClientRect();
@@ -423,7 +461,7 @@ const RecyclingGame = () => {
         const scaleY = canvas.height / rect.height;
         const offsetX = scaleX * (event.pageX - rect.left);
         const offsetY = scaleY * (event.pageY - rect.top);
-    
+
         if (
           offsetX >= x &&
           offsetX <= x + width &&
@@ -433,8 +471,8 @@ const RecyclingGame = () => {
           callback();
         }
       });
-    }    
-    
+    }
+
     function drawGameOverScreen() {
       if (lives <= 0) {
         // Draw the background box
@@ -445,28 +483,34 @@ const RecyclingGame = () => {
         const boxY = (canvas.height - boxHeight) / 2;
         ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
 
-    // Find the pre-loaded image
-    const imageObj = loadedgamescreen.find(obj => obj.image.src.includes("/gameoverbox.png"));
+        // Find the pre-loaded image
+        const imageObj = loadedgamescreen.find((obj) =>
+          obj.image.src.includes("/gameoverbox.png")
+        );
 
-    // Draw the image
-    if (imageObj && imageObj.image) {
-      const image = imageObj.image;
-      const imageX = (canvas.width - image.width) / 2;  // centers the image
-      const imageY = (canvas.height - image.height) / 5;  // placing it above the middle
-      ctx.drawImage(image, imageX, imageY);
-    }
-    
-// Draw the "Points earned:" text
-ctx.font = "bold 90px Helvetica";
-ctx.fillStyle = "white";
-ctx.textBaseline = "middle";
-ctx.textAlign = "center";
-ctx.fillText("Points earned:", canvas.width / 2, canvas.height / 3 + 100);
+        // Draw the image
+        if (imageObj && imageObj.image) {
+          const image = imageObj.image;
+          const imageX = (canvas.width - image.width) / 2; // centers the image
+          const imageY = (canvas.height - image.height) / 5; // placing it above the middle
+          ctx.drawImage(image, imageX, imageY);
+        }
 
-// Draw the score on a separate row
-ctx.font = "bold 60px Helvetica";
-ctx.fillText(score, canvas.width / 2, canvas.height / 3 + 200);
-    
+        // Draw the "Points earned:" text
+        ctx.font = "bold 90px Helvetica";
+        ctx.fillStyle = "white";
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "center";
+        ctx.fillText(
+          "Points earned:",
+          canvas.width / 2,
+          canvas.height / 3 + 100
+        );
+
+        // Draw the score on a separate row
+        ctx.font = "bold 60px Helvetica";
+        ctx.fillText(score, canvas.width / 2, canvas.height / 3 + 200);
+
         drawButton(
           canvas.width / 2 - 262.5,
           canvas.height / 2 + 157.5,
@@ -480,7 +524,7 @@ ctx.fillText(score, canvas.width / 2, canvas.height / 3 + 200);
             startGame();
           }
         );
-    
+
         drawButton(
           canvas.width / 2 - 262.5,
           canvas.height / 2 + 315, // increased y-coordinate for margin
@@ -491,7 +535,7 @@ ctx.fillText(score, canvas.width / 2, canvas.height / 3 + 200);
             router.push("/leaderboard");
           }
         );
-    
+
         drawButton(
           canvas.width / 2 - 262.5,
           canvas.height / 2 + 472.5, // increased y-coordinate for margin
@@ -504,7 +548,7 @@ ctx.fillText(score, canvas.width / 2, canvas.height / 3 + 200);
         );
       }
     }
-    
+
     function startSpawningItems() {
       if (!spawnInterval) {
         spawnInterval = setInterval(() => {
@@ -563,18 +607,43 @@ ctx.fillText(score, canvas.width / 2, canvas.height / 3 + 200);
       false
     );
 
-    canvas.addEventListener("touchstart", (event) => handlePointer(event, "down"), false);
-    canvas.addEventListener("touchmove", (event) => handlePointer(event, "move"), false);
-    canvas.addEventListener("touchend", (event) => handlePointer(event, "up"), false);
-    return () => window.removeEventListener('resize', handleResize);
+    canvas.addEventListener(
+      "touchstart",
+      (event) => handlePointer(event, "down"),
+      false
+    );
+    canvas.addEventListener(
+      "touchmove",
+      (event) => handlePointer(event, "move"),
+      false
+    );
+    canvas.addEventListener(
+      "touchend",
+      (event) => handlePointer(event, "up"),
+      false
+    );
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      audioRef.current.pause(); // Ensure that the audio is paused if the component is unmounted
+    };
   }, []);
   return (
     <div className="game-container">
       <canvas ref={canvasRef} className="game-canvas" />
-      <div className={`game-button game-home-button ${homeButtonActive ? "" : "game-button-off"}`} onClick={() => handleHomeClick(!homeButtonActive)}>
+      <div
+        className={`game-button game-home-button ${
+          homeButtonActive ? "" : "game-button-off"
+        }`}
+        onClick={() => handleHomeClick(!homeButtonActive)}
+      >
         <FaHome className="game-icon" />
       </div>
-      <div className={`game-button game-music-button ${musicButtonActive ? "" : "game-button-off"}`} onClick={() => setMusicButtonActive(!musicButtonActive)}>
+      <div
+        className={`game-button game-music-button ${
+          musicButtonActive ? "" : "game-button-off"
+        }`}
+        onClick={handleMusicButtonClick}
+      >
         <FaMusic className="game-icon" />
       </div>
     </div>
