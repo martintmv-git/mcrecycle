@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import QRCode from "qrcode.react";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router'
 import itemData from "../itemData";
 import { useUser } from "@clerk/clerk-react";
 import Image from "next/image";
