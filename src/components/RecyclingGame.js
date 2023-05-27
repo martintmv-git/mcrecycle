@@ -39,6 +39,7 @@ const RecyclingGame = () => {
 
     // Start playing the audio when the component mounts
     audioRef.current.autoplay = true;
+    audioRef.current.loop = true; // Add loop attribute
     audioRef.current.play().catch((error) => {
       console.error("Failed to play audio:", error);
     });
