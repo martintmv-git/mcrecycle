@@ -79,7 +79,7 @@ canvas {
   background-repeat: no-repeat;
   width: 56.25vh; /* Adjusted width to match 9:16 aspect ratio */
   height: 100%;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .navbar {

@@ -2,9 +2,9 @@ import { supabase } from "./supabaseClient";
 
 export async function getUserBalance(userId) {
   const { data, error } = await supabase
-    .from("gameData") // replace with your user table
-    .select("points") // replace with your balance column
-    .eq("id", userId); // replace with your user ID column
+    .from("gameData") 
+    .select("points") 
+    .eq("id", userId);
 
   if (error) {
     console.error(error);
@@ -27,10 +27,6 @@ export async function fetchUserBalance(userId) {
     console.error(error);
     return { error };
   }
-
-  return { balance: data[0].points };
-}
-
 
   return { balance: data[0].points };
 }
