@@ -5,7 +5,7 @@ import { supabase } from "../../lib/supabaseClient";
 export default async function handler(req, res) {
   const event = req.body;
   const clerkUserId = event.data.id;
-  const clerkName = event.data.firstname;
+  const clerkName = event.data.first_name;
 
   if (event.type === "user.created") {
     // Check if this Clerk user ID already exists in the database
@@ -24,11 +24,7 @@ export default async function handler(req, res) {
       const { error } = await supabase
         .from("gameData")
         .insert([{ points: 0, name: clerkName, clerkId: clerkUserId }]);
-      console.log(clerkName, "created")
-      console.log("CLEAN EVENT:", event)
-      console.log("EVENT WITH DATA:", event.data)
-      console.log("EVENT DATA AND NAME:", event.data.name)
-      console.log("EVENT WITH NAME:", event.name)
+      console.log(clerkName, "created");
       if (error) {
         console.error("Error inserting into database:", error);
         return res
