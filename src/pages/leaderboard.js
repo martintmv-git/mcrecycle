@@ -35,7 +35,7 @@ const Leaderboard = () => {
 
   return (
     <div className="leaderboard-container">
-      <div className="leaderboard">
+      <div className="leaderboard" style={{ overflowX: "hidden" }}>
         <div className="navbar">
           <button className="left-button" onClick={handleLeftButtonClick}>
             Back

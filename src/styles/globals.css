@@ -646,6 +646,7 @@ canvas {
     object-fit: cover;
   }
 }
+/* id */
 .uniqueItemContainer {
   position: relative;
   width: 350px;
@@ -665,6 +666,37 @@ canvas {
   padding: 20px;
   color: rgb(0, 0, 0);
 }
+
+.qr-code {
+  position: absolute;
+  top: 80%; 
+  left: 0;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.back-to-game-button {
+  background-color: #DA291C;
+  color: white;
+  border-radius: 20px;
+  font-size: 1.5em; /* Make the text larger */
+  border: none;
+  padding: 15px 30px; /* Add some padding */
+  cursor: pointer;
+  display: block; 
+  margin: 20px auto; /* Center the button */
+  margin-top: 3rem;
+  transition: background 0.3s ease; /* Transition for hover effect */
+}
+
+.back-to-game-button:hover {
+  background-color: darkred; /* Change the color slightly when hovered */
+}
+
 @media (min-width: 768px) {
   .uniqueItemTextOverlay {
     top: 20vh;
