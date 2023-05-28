@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import QRCode from "qrcode.react";
 import { useUser } from "@clerk/clerk-react";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -127,12 +126,6 @@ const Shop = () => {
             )}
           </div>
         </div>
-        {selectedItem && (
-          <div className="qr-code">
-            <h2>QR Code for your item:</h2>
-            <QRCode value={selectedItem.id.toString()} />
-          </div>
-        )}
       </div>
     </div>
   );
