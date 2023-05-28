@@ -348,6 +348,30 @@ canvas {
 .leaderboard-button, .shop-button {
   width: 100%;
 }
+.menu-title {
+  background: #f9f9f98e;
+  border-radius: 5px;
+  padding: 0.5vh;
+  box-sizing: border-box;
+  font-size: 16px;
+  display: inline-block;
+  text-decoration: double;
+  border: 0.2vh solid;
+  border-color: #27251F;
+}
+
+.menu-price {
+  background: #ffc72cbd;
+  border-radius: 5px;
+  padding: 3px;
+  padding-bottom: 3px;
+  box-sizing: border-box;
+  font-size: 12px;
+  text-decoration: double;
+  border: 0.2vh solid;
+  border-color: #27251F;
+}
+
 
 
 /* Loader */
@@ -559,6 +583,7 @@ canvas {
   margin-right: 20px;
   background-size: cover;
   background-position: center;
+  cursor: pointer;
 }
 
 .items-list::-webkit-scrollbar {
@@ -640,12 +665,19 @@ canvas {
   }
 }
 @media (min-width: 768px) {
+  .container {
+    display: flex;
+  }
+
   .item {
     margin-top: 10px;
-    height: 25vh;
-    object-fit: cover;
+    height: 20vh;
+    flex-grow: 1;
+    flex-basis: 0;
+    cursor: pointer;
   }
 }
+
 /* id */
 .uniqueItemContainer {
   position: relative;
@@ -682,19 +714,19 @@ canvas {
 .back-to-game-button {
   background-color: #DA291C;
   color: white;
-  border-radius: 20px;
-  font-size: 1.5em; /* Make the text larger */
+  border-radius: 15px;
+  font-size: 1.5em;
   border: none;
-  padding: 15px 30px; /* Add some padding */
+  padding: 15px 30px;
   cursor: pointer;
   display: block; 
-  margin: 20px auto; /* Center the button */
+  margin: 20px auto;
   margin-top: 3rem;
-  transition: background 0.3s ease; /* Transition for hover effect */
+  transition: background 0.3s ease;
 }
 
 .back-to-game-button:hover {
-  background-color: darkred; /* Change the color slightly when hovered */
+  background-color: darkred;
 }
 
 @media (min-width: 768px) {

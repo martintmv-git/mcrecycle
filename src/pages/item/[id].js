@@ -5,14 +5,13 @@ import { useRouter } from "next/router";
 import itemData from "../../lib/itemData";
 import { useUser } from "@clerk/clerk-react";
 import Image from "next/image";
-import GameInfo from "../../components/GameInfo";
+import { FaDownload } from "react-icons/fa";
 
 const ItemPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { user } = useUser();
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [balance, setBalance] = useState(500); // don't forget to change to 0 for production
   const [showQR, setShowQR] = useState(false);
@@ -95,10 +94,6 @@ const ItemPage = () => {
     }
   };
 
-  const handleOverlayToggle = () => {
-    setIsOverlayOpen(!isOverlayOpen);
-  };
-
   return (
     <div className="leaderboard-container">
       <div className="leaderboard" style={{ overflowX: "hidden" }}>
@@ -106,27 +101,22 @@ const ItemPage = () => {
           <button className="left-button" onClick={handleLeftButtonClick}>
             Back
           </button>
-          <button className="right-button" onClick={handleRightButtonClick}>
-            Save QR
+          <button className="left-button" onClick={handleRightButtonClick}>
+            <FaDownload /> QR
           </button>
           <div className="logo">
             <Image src="/shop.png" alt="Shop logo" width={152} height={129} />
           </div>
         </div>
-        {isOverlayOpen && (
-          <div className="overlay" onClick={handleOverlayToggle}>
-            <GameInfo />
-          </div>
-        )}
 
         <div className="balance-header">
           <div className="balance-left">Your balance</div>
           <div className="balance-right">{balance}</div>
         </div>
         <br></br>
+        {!imageLoaded && <div className="loader"></div>}
         <div className="uniqueItemContainer">
           <div className="uniqueItemImageContainer">
-            {!imageLoaded && <div className="loader"></div>}
             <Image
               src={item.imageUrl}
               alt={item.name}
@@ -134,7 +124,7 @@ const ItemPage = () => {
               height={420}
               onLoad={() => setImageLoaded(true)}
             />
-            {!showQR && (
+            {imageLoaded && !showQR && (
               <div className="uniqueItemTextOverlay">
                 <h2>{item.name}</h2>
                 <p>{item.description}</p>
