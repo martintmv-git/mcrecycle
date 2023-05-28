@@ -5,7 +5,7 @@ import { supabase } from "../../lib/supabaseClient";
 export default async function handler(req, res) {
   const event = req.body;
   const clerkUserId = event.data.id;
-  const clerkName = event.name;
+  const clerkName = event.data.firstname;
 
   if (event.type === "user.created") {
     // Check if this Clerk user ID already exists in the database
