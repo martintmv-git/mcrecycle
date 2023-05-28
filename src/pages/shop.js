@@ -94,8 +94,9 @@ const Shop = () => {
                 onClick={() => handleItemClick(item)}
                 style={{ backgroundImage: `url(/item${index + 1}.jpg)` }}
               >
-                <h2>{item.name}</h2>
-                <h3>{item.price} points</h3>
+                <h2 className="menu-title">{item.name}</h2>
+                <h3 className="menu-price">{item.price} POINTS</h3>
+                <br></br>
                 {index !== items.length - 1 && (
                   <div style={{ marginRight: "20px" }} />
                 )}
@@ -116,8 +117,9 @@ const Shop = () => {
                   onClick={() => handleItemClick(item)}
                   style={{ backgroundImage: `url(/menuitem${index + 1}.jpg)` }}
                 >
-                  <h2>{item.name}</h2>
-                  <h3>{item.price} points</h3>
+                  <h2 className="menu-title">{item.name}</h2>
+                  <h3 className="menu-price">{item.price} POINTS</h3>
+                  <br></br>
                   {index !== items.length - 1 && (
                     <div style={{ marginRight: "20px" }} />
                   )}
