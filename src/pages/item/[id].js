@@ -6,7 +6,6 @@ import itemData from "../../lib/itemData";
 import { useUser } from "@clerk/clerk-react";
 import Image from "next/image";
 import GameInfo from "../../components/GameInfo";
-import { FaQuestion, FaTimes } from "react-icons/fa";
 
 const ItemPage = () => {
   const router = useRouter();
@@ -50,9 +49,6 @@ const ItemPage = () => {
         <div className="navbar">
           <button className="left-button" onClick={handleLeftButtonClick}>
             Back
-          </button>
-          <button className="right-button" onClick={handleOverlayToggle}>
-            {isOverlayOpen ? <FaTimes /> : <FaQuestion />}
           </button>
           <div className="logo">
             <Image src="/shop.png" alt="Shop logo" width={152} height={129} />
