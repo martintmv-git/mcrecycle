@@ -31,6 +31,10 @@ export async function fetchUserBalance(userId) {
   return { balance: data[0].points };
 }
 
+
+  return { balance: data[0].points };
+}
+
 export async function fetchShopItems() {
   const { data, error } = await supabase
     .from("shopItems")
