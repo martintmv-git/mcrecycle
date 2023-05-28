@@ -25,6 +25,9 @@ export default async function handler(req, res) {
         .from("gameData")
         .insert([{ points: 0, name: clerkName, clerkId: clerkUserId }]);
       console.log(clerkName, "created")
+      console.log(event)
+      console.log(event.data)
+      console.log(event.data.name)
       if (error) {
         console.error("Error inserting into database:", error);
         return res
