@@ -1,16 +1,19 @@
+// Pixel Minds - McRecycle - Fontys UAS Eindhoven - Main Game Logic Code
 import React, { useEffect, useState, useRef } from "react";
 import { FaHome, FaMusic } from "react-icons/fa";
 import { useRouter } from "next/router";
 
+// Main component for the recycling game.
 const RecyclingGame = () => {
   const canvasRef = useRef(null);
   const audioRef = useRef(new Audio("/music.mp3"));
 
+// States to track buttons.
   const [homeButtonActive, setHomeButtonActive] = useState(true);
   const [musicButtonActive, setMusicButtonActive] = useState(true);
   const [gameOver, setGameOver] = useState(false);
-  const [finalScore, setFinalScore] = useState(0);
 
+// NEXT.JS router.
   const router = useRouter();
 
   function handleHomeClick() {
@@ -26,47 +29,53 @@ const RecyclingGame = () => {
     setMusicButtonActive(!musicButtonActive);
   }
 
+// Effect runs when the component mounts.
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     document.body.style.overflowX = "hidden";
 
+// Initial score and lives.
     const startScore = 0;
     const startLives = 3;
+// Variables to hold the current score and lives.
     let score = startScore;
     let lives = startLives;
+// Variable to hold the interval for spawning items.
     let spawnInterval;
 
-    // Start playing the audio when the component mounts
+// Start playing the audio when the component mounts.
     audioRef.current.autoplay = true;
-    audioRef.current.loop = true; // Add loop attribute
+    audioRef.current.loop = true;
     audioRef.current.play().catch((error) => {
       console.error("Failed to play audio:", error);
     });
 
+// Handler for resizing the window.
     const handleResize = () => {
       document.body.style.backgroundColor =
         window.innerWidth < 768 ? backgroundColors[currentBackground] : "";
     };
 
+// Function to draw the score and lives.
     function drawScoreLives() {
-      ctx.font = "bold 60px Helvetica"; // Increase font size by 50%
+      ctx.font = "bold 60px Helvetica";
       ctx.fillStyle = "white";
       ctx.textBaseline = "top";
       ctx.textAlign = "right";
-      ctx.fillText("" + score, canvas.width - 15, 30); // Increase right margin by 50% and top margin by 50%
+      ctx.fillText("" + score, canvas.width - 15, 30);
 
-      const heartSize = 52.5; // Increase heart size by 50%
-      const heartSpacing = 33.75; // Increase heart spacing by 50%
+      const heartSize = 52.5;
+      const heartSpacing = 33.75;
       for (let i = 0; i < lives; i++) {
         ctx.fillText(
           "❤️",
           canvas.width - 15 - i * (heartSize + heartSpacing),
           105
-        ); // Increase right margin by 50% and top margin by 50%
+        );
       }
     }
-
+// Responsive game canvas.
     function resizeCanvas() {
       const targetWidth = 9.5;
       const targetHeight = 16;
@@ -94,18 +103,22 @@ const RecyclingGame = () => {
     let touchStartBucketX;
     let isMouseDown = false;
 
+// Function to extract the X coordinate of an event.
+// This supports both touch and non-touch events.    
     function getEventClientX(event) {
       return event.type.startsWith("touch")
         ? event.touches[0].clientX
         : event.clientX;
     }
 
+// Similar to getEventClientX, but for the Y coordinate.    
     function getEventClientY(event) {
       return event.type.startsWith("touch")
         ? event.touches[0].clientY
         : event.clientY;
     }
 
+// Function to handle pointer events (mouse or touch).    
     function handlePointer(event, action) {
       if (isTouchDevice()) {
         event.preventDefault();
@@ -139,6 +152,8 @@ const RecyclingGame = () => {
       }
     }
 
+// Create an image.
+// The image is reloaded every time this function is called, to prevent caching.    
     function createImage(src, onload) {
       const image = new Image();
       image.src = src + "?" + new Date().getTime();
@@ -154,6 +169,7 @@ const RecyclingGame = () => {
         });
       }
 
+// Function to draw the background if it is loaded.
       draw() {
         if (this.loaded) {
           ctx.drawImage(this.image, 0, 0, canvas.width, canvas.height);
@@ -192,20 +208,24 @@ const RecyclingGame = () => {
           backgroundColors[currentBackground];
       }
     }
-
+// Class for the bucket that is collecting the items.
     class Bucket {
       constructor(canvas, y, width, height) {
         this.loaded = false;
+// The bucket is initially centered in the canvas.
         this.x = canvas.width / 2 - width / 2;
         this.y = y;
         this.width = width;
         this.height = height;
+// The speed of the bucket when it moves.
         this.speed = 8;
         this.image = createImage("/bin.png", () => {
           this.loaded = true;
         });
       }
 
+// Function to draw the bucket, if it is loaded.
+// The bucket is drawn according to its aspect ratio.
       draw() {
         if (this.loaded) {
           const aspectRatio = this.image.width / this.image.height;
@@ -214,10 +234,12 @@ const RecyclingGame = () => {
         }
       }
 
+// Function to update the state of the bucket.
       update() {
         moveBucket();
       }
 
+// Check if the bucket is touched at a given X and Y coordinate.
       isTouched(x, y) {
         const scaleFactor = parseFloat(canvas.style.width) / canvas.width;
         const touchX = x / scaleFactor;
@@ -231,6 +253,7 @@ const RecyclingGame = () => {
       }
     }
 
+// Array of image sources (URLs) to preload them.
     const itemImages = [
       "/burger.png",
       "/cup.png",
@@ -242,11 +265,13 @@ const RecyclingGame = () => {
       return { image };
     });
 
+// Similar to the previous block, but this time for the 'game over' screen.
     const loadedgamescreen = ["/gameoverbox.png"].map((imageSrc) => {
       const image = createImage(imageSrc);
       return { image };
     });
 
+// Class for the falling items that are collected in the bucket.
     class FallingItem {
       constructor(x, y, width, height, speed, image) {
         this.x = x;
@@ -285,10 +310,12 @@ const RecyclingGame = () => {
       }
     }
 
+// Array that will store all the falling items.
     const items = [];
     let keys = {};
     let bucket;
 
+// spawnItem() function is used to create a new falling item.
     function spawnItem() {
       const width = 105;
       const height = 105;
@@ -301,6 +328,7 @@ const RecyclingGame = () => {
       const item = new FallingItem(x, y, width, height, speed, image);
     }
 
+// decrementLives() is used to decrease the player's lives by 1, and end the game if no lives are left.
     function decrementLives() {
       lives--;
       if (lives <= 0) {
@@ -308,6 +336,7 @@ const RecyclingGame = () => {
       }
     }
 
+// Sets up the game and starts the game loop.
     function startGame() {
       resizeCanvas();
       handleResize();
@@ -318,24 +347,24 @@ const RecyclingGame = () => {
 
       bucket = new Bucket(
         canvas,
-        canvas.height - bucketHeight - 30, // Increase bottom margin by 50%
+        canvas.height - bucketHeight - 30,
         bucketWidth,
         bucketHeight
       );
 
       gameLoop();
 
-      // Check if the document is visible before starting to spawn items
+// Check if the game is visible before starting to spawn items.
       if (!document.hidden) {
         startSpawningItems();
       }
 
-      // Handle the visibilitychange event
+// Handle the visibilitychange event.
       document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
           stopSpawningItems();
         } else {
-          // Only start spawning items if the game is not over
+// Only start spawning items if the game is not over.
           if (!gameOver) {
             startSpawningItems();
           }
@@ -402,15 +431,14 @@ const RecyclingGame = () => {
     });
 
     function gameOver() {
-      // Stop the game
+// Stop the game.
       stopSpawningItems();
       items.length = 0;
 
-      // Set game over state and final score
+// Set game over state and final score.
       setGameOver(true);
-      setFinalScore(score);
 
-      // Display the final score
+// Display the final score.
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBackground();
       ctx.font = "bold 60px Helvetica";
@@ -419,13 +447,10 @@ const RecyclingGame = () => {
       ctx.textAlign = "center";
       ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 60);
       ctx.fillText("Score: " + score, canvas.width / 2, canvas.height / 2);
-
-      //listener to click on the canvas to restart the game
-      canvas.addEventListener("click", startGame);
     }
 
     function drawButton(x, y, width, height, text, callback) {
-      // Create rounded rectangle
+// Create rounded rectangle.
       const radius = 10;
       ctx.beginPath();
       ctx.moveTo(x + radius, y);
@@ -444,11 +469,16 @@ const RecyclingGame = () => {
       ctx.quadraticCurveTo(x, y, x + radius, y);
       ctx.closePath();
 
-      // Fill the button
-      ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+// Fill the button.
+      ctx.fillStyle = "rgba(255, 199, 44, 0.7)";
       ctx.fill();
 
-      // Draw the text
+// Draw border.
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "black";
+      ctx.stroke();
+
+// Draw the text.
       ctx.font = "bold 50px Helvetica";
       ctx.fillStyle = "white";
       ctx.textBaseline = "middle";
@@ -472,11 +502,36 @@ const RecyclingGame = () => {
           callback();
         }
       });
+
+// Touch event.
+      canvas.addEventListener(
+        "touchstart",
+        (event) => {
+          const rect = canvas.getBoundingClientRect();
+          const scaleX = canvas.width / rect.width;
+          const scaleY = canvas.height / rect.height;
+          const offsetX = scaleX * (event.touches[0].pageX - rect.left);
+          const offsetY = scaleY * (event.touches[0].pageY - rect.top);
+
+          if (
+            offsetX >= x &&
+            offsetX <= x + width &&
+            offsetY >= y &&
+            offsetY <= y + height
+          ) {
+            callback();
+          }
+
+// Prevent the window from scrolling when the button is pressed.
+          event.preventDefault();
+        },
+        { passive: false }
+      );
     }
 
     function drawGameOverScreen() {
       if (lives <= 0) {
-        // Draw the background box
+// Draw the background box.
         ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
         const boxWidth = canvas.width * 1;
         const boxHeight = canvas.height * 2;
@@ -484,51 +539,48 @@ const RecyclingGame = () => {
         const boxY = (canvas.height - boxHeight) / 2;
         ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
 
-        // Find the pre-loaded image
+// Find the pre-loaded image.
         const imageObj = loadedgamescreen.find((obj) =>
           obj.image.src.includes("/gameoverbox.png")
         );
 
-        // Draw the image
+// Draw the image.
         if (imageObj && imageObj.image) {
           const image = imageObj.image;
-          const imageX = (canvas.width - image.width) / 2; // centers the image
-          const imageY = (canvas.height - image.height) / 5; // placing it above the middle
+          const imageX = (canvas.width - image.width) / 2;
+          const imageY = (canvas.height - image.height) / 5; 
           ctx.drawImage(image, imageX, imageY);
         }
 
-        // Draw the "Points earned:" text
+// Draw the "Points earned" text.
         ctx.font = "bold 90px Helvetica";
         ctx.fillStyle = "white";
         ctx.textBaseline = "middle";
         ctx.textAlign = "center";
         ctx.fillText(
-          "Points earned:",
+          "Points earned",
           canvas.width / 2,
           canvas.height / 3 + 100
         );
 
-        // Draw the score on a separate row
-        ctx.font = "bold 60px Helvetica";
+// Draw the score on a separate row.
+        ctx.font = "bold 75px Helvetica";
         ctx.fillText(score, canvas.width / 2, canvas.height / 3 + 200);
 
         drawButton(
           canvas.width / 2 - 262.5,
-          canvas.height / 2 + 157.5,
+          canvas.height / 2 + 80,
           525,
           105,
           "Play again?",
           () => {
-            lives = startLives;
-            score = startScore;
-            currentBackground = 0;
-            startGame();
+            router.reload();
           }
         );
 
         drawButton(
           canvas.width / 2 - 262.5,
-          canvas.height / 2 + 315, // increased y-coordinate for margin
+          canvas.height / 2 + 200, // y-coordinate for margin
           525,
           105,
           "Leaderboard",
@@ -539,7 +591,7 @@ const RecyclingGame = () => {
 
         drawButton(
           canvas.width / 2 - 262.5,
-          canvas.height / 2 + 472.5, // increased y-coordinate for margin
+          canvas.height / 2 + 320, // y-coordinate for margin
           525,
           105,
           "Shop",
@@ -551,6 +603,10 @@ const RecyclingGame = () => {
     }
 
     function startSpawningItems() {
+      if (!gameOver) {
+        return;
+      }
+
       if (!spawnInterval) {
         spawnInterval = setInterval(() => {
           spawnItem();
@@ -566,6 +622,11 @@ const RecyclingGame = () => {
     }
 
     function handleVisibilityChange() {
+      if (gameOver) {
+// If the game is over, do not start or stop spawning items.
+        return;
+      }
+
       if (document.hidden) {
         stopSpawningItems();
       } else {
@@ -625,7 +686,7 @@ const RecyclingGame = () => {
     );
     return () => {
       window.removeEventListener("resize", handleResize);
-      audioRef.current.pause(); // Ensure that the audio is paused if the component is unmounted
+      audioRef.current.pause(); // Ensure that the audio is paused if the component is unmounted.
     };
   }, []);
   return (
