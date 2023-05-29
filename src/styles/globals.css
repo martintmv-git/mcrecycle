@@ -545,9 +545,13 @@ canvas {
 }
 
 .game-over-buttons {
-  margin-top: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .game-over-button {
@@ -555,10 +559,11 @@ canvas {
   color: #333;
   cursor: pointer;
   padding: 10px 20px;
-  margin: 0 10px;
+  margin: 10px;
   font-size: 1em;
   border: none;
   border-radius: 5px;
+  margin-bottom: 20vh;
 }
 /* menu */
 .items-container {
