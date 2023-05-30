@@ -18,6 +18,20 @@ export async function getUserBalance(userId) {
   return { balance: data[0].points };
 }
 
+export async function updateBalance(clerkId, newBalance) {
+  const { error } = await supabase
+    .from("gameData")
+    .update({ points: newBalance })
+    .eq("clerkId", clerkId);
+
+  if (error) {
+    console.error(error);
+    return { error };
+  }
+
+  return { success: true };
+}
+
 export async function fetchUserBalance(userId) {
   const { data, error } = await supabase
     .from("gameData")
