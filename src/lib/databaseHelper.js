@@ -2,8 +2,8 @@ import { supabase } from "./supabaseClient";
 
 export async function getUserBalance(userId) {
   const { data, error } = await supabase
-    .from("gameData") 
-    .select("points") 
+    .from("gameData")
+    .select("points")
     .eq("id", userId);
 
   if (error) {
@@ -20,7 +20,7 @@ export async function getUserBalance(userId) {
 
 export async function fetchUserBalance(userId) {
   const { data, error } = await supabase
-    .from("gameData") 
+    .from("gameData")
     .select("points")
     .eq("id", userId);
   if (error) {
@@ -30,7 +30,6 @@ export async function fetchUserBalance(userId) {
 
   return { balance: data[0].points };
 }
-
 
 export async function fetchShopItems() {
   const { data, error } = await supabase
@@ -48,8 +47,8 @@ export async function fetchShopItems() {
 
 export async function fetchUserId(clerkId) {
   const { data, error } = await supabase
-    .from("ids")
-    .select("user_id")
+    .from("gameData")
+    .select("id")
     .eq("clerk_id", clerkId);
 
   if (error) {
