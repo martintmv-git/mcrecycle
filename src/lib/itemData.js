@@ -2,50 +2,46 @@
 const itemData = [
     {
       id: "1",
-      name: "Item 1",
-      imageUrl: "/menu3.png",
-      description: "Item 1",
-      price: 30000,
+      name: "Burger and 2X Fries",
+      imageUrl: "/menu1.png",
+      description: "1x BigMac | 2x Large Fries",
+      price: 20000,
     },
     {
       id: "2",
-      name: " McFlurry Vegan Menu",
+      name: "McPlant Vegan Menu",
       imageUrl: "/menu2.png",
-      description: "1x McFlurry Vegan Burger | 1x Fries ",
+      description: "1x McFlurry Vegan Burger | 1x Fries",
       price: 20,
     },
     {
       id: "3",
-      name: "Burger & Fries Menu",
-      imageUrl: "/menu1.png",
-      description: "1x McPlant Burger | 2x Medium Fries",
-      price: 20000,
-    },
-    /*
-    {
-      id: "4",
-      name: "Item 4",
+      name: "Full House Menu",
       imageUrl: "/menu3.png",
-      description: "Item 4",
+      description: "1x BigMac | 1x Fries | 1x McNugget",
       price: 30000,
     },
     {
+      id: "4",
+      name: "McPlant Burger",
+      imageUrl: "/menu4.png",
+      description: "1x McPlant Burger",
+      price: 15000,
+    },
+    {
       id: "5",
-      name: "Item 5",
-      imageUrl: "/menu2.png",
-      description: "Item 4",
-      price: 17500,
+      name: "Spicy Veggie Wrap",
+      imageUrl: "/menu5.png",
+      description: "1x McPlant Burger",
+      price: 15000,
     },
     {
       id: "6",
-      name: "Item 6",
-      imageUrl: "/menu1.png",
-      description: "Item 4",
-      price: 20000,
+      name: "Chicken Tender",
+      imageUrl: "/menu6.png",
+      description: "1x Chicken Tender",
+      price: 12000,
     },
-    
-    */
-    // ... add the rest of items here
   ];
   
   export default itemData;
