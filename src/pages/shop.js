@@ -59,6 +59,9 @@ const Shop = () => {
     setIsOverlayOpen(!isOverlayOpen);
   };
 
+  const firstRowItems = items.slice(0, 3);
+  const secondRowItems = items.slice(3, 6);
+
   return (
     <div className="leaderboard-container">
       <div className="leaderboard" style={{ overflowX: "hidden" }}>
@@ -87,7 +90,7 @@ const Shop = () => {
             <h3>Menu Deals</h3>
           </div>
           <div className="items-list">
-            {items.map((item, index) => (
+            {firstRowItems.map((item, index) => (
               <div
                 key={item.id}
                 className="item"
@@ -109,14 +112,14 @@ const Shop = () => {
           <div className="items-list">
             {loadingData ? (
               <div className="loader"></div>
-            ) : (
-              items.map((item, index) => (
-                <div
-                  key={item.id}
-                  className="item"
-                  onClick={() => handleItemClick(item)}
-                  style={{ backgroundImage: `url(/menuitem${index + 1}.jpg)` }}
-                >
+              ) : (
+                secondRowItems.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className="item"
+                    onClick={() => handleItemClick(item)}
+                    style={{ backgroundImage: `url(/menuitem${index + 1}.jpg)` }}
+                  >
                   <h2 className="menu-title">{item.name}</h2>
                   <h3 className="menu-price">{item.price} POINTS</h3>
                   <br></br>

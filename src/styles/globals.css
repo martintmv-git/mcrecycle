@@ -366,10 +366,11 @@ canvas {
   padding: 3px;
   padding-bottom: 3px;
   box-sizing: border-box;
-  font-size: 12px;
+  font-size: 16px;
   text-decoration: double;
   border: 0.2vh solid;
   border-color: #27251F;
+  width: 80%;
 }
 
 
@@ -416,7 +417,6 @@ canvas {
   border-radius: 5px;
   padding: 0.5vw;
 }
-
 
 .game-info-title {
   font-size: 2.5vw; 
