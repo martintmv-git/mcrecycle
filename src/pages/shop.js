@@ -22,6 +22,7 @@ const Shop = () => {
       axios
         .get(`/api/balance?userId=${user.id}`)
         .then((response) => {
+          console.log(response.data);
           setBalance(response.data.balance);
         })
         .catch((error) => {
@@ -112,14 +113,14 @@ const Shop = () => {
           <div className="items-list">
             {loadingData ? (
               <div className="loader"></div>
-              ) : (
-                secondRowItems.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className="item"
-                    onClick={() => handleItemClick(item)}
-                    style={{ backgroundImage: `url(/menuitem${index + 1}.jpg)` }}
-                  >
+            ) : (
+              secondRowItems.map((item, index) => (
+                <div
+                  key={item.id}
+                  className="item"
+                  onClick={() => handleItemClick(item)}
+                  style={{ backgroundImage: `url(/menuitem${index + 1}.jpg)` }}
+                >
                   <h2 className="menu-title">{item.name}</h2>
                   <h3 className="menu-price">{item.price} POINTS</h3>
                   <br></br>
