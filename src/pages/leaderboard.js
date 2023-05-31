@@ -37,7 +37,7 @@ const Leaderboard = () => {
 
   useEffect(() => {
     async function loadUserRank() {
-      const { userRank } = await getUserRankings("123");
+      const { userRank } = await getUserRankings(user.id);
       setUserRank(userRank);
     }
     loadUserRank();
