@@ -10,6 +10,7 @@ import { useUser } from "@clerk/nextjs";
 const RecyclingGame = () => {
   const canvasRef = useRef(null);
   const audioRef = useRef(new Audio("/music.mp3"));
+  let axiosCalled = false;
 
   const { user } = useUser();
   // States to track buttons.
@@ -452,6 +453,20 @@ const RecyclingGame = () => {
       ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 60);
       ctx.fillText("Score: " + score, canvas.width / 2, canvas.height / 2);
       console.log(user);
+
+      // Send the score to the newBalance API.
+      // This is called at the end of the gameOver function so it won't be executed until the game is over.
+      if (user && user.id) {
+        // Make sure user and user.id exists
+        axios
+          .post("/api/newBalance", { clerkId: user.id, amount: score })
+          .then((response) => {
+            console.log(response.data.message);
+          })
+          .catch((error) => {
+            console.error("Error updating balance:", error);
+          });
+      }
     }
 
     function drawButton(x, y, width, height, text, callback) {

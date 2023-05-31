@@ -63,7 +63,7 @@ export async function fetchUserId(clerkId) {
   const { data, error } = await supabase
     .from("gameData")
     .select("id")
-    .eq("clerk_id", clerkId);
+    .eq("clerkId", clerkId);
 
   if (error) {
     console.error(error);
