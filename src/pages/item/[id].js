@@ -26,7 +26,7 @@ const ItemPage = () => {
       axios
         .get(`/api/balance?userId=${user.id}`)
         .then((response) => {
-          setBalance(response.data.balance);
+          setBalance(response.data.balance["balance"]);
         })
         .catch((error) => {
           console.error("Error fetching balance: ", error);
