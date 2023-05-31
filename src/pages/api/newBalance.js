@@ -16,10 +16,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "clerkid is required" });
     }
 
-    console.log("clerkId", clerkId);
     const balance = await fetchUserBalance(clerkId);
-    console.log("balance", balance["balance"]);
-    const newUserBalance = balance + amount;
+    const newUserBalance = balance["balance"] + amount;
     await updateBalance(clerkId, newUserBalance);
 
     res.status(200).json({ message: "Balance updated successfully" });
