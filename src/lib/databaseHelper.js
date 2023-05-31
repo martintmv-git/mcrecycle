@@ -4,7 +4,7 @@ export async function getUserBalance(userId) {
   const { data, error } = await supabase
     .from("gameData")
     .select("points")
-    .eq("id", userId);
+    .eq("clerkId", userId);
 
   if (error) {
     console.error(error);

@@ -1,4 +1,8 @@
-import { fetchUserId, fetchUserBalance } from "../../lib/databaseHelper";
+import {
+  fetchUserId,
+  fetchUserBalance,
+  getUserBalance,
+} from "../../lib/databaseHelper";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -13,14 +17,10 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "User ID is required." });
   }
 
-  const userId = await fetchUserId(clerkId);
+  console.log(clerkId);
+  const balance = await getUserBalance(clerkId);
 
-  if (!userId) {
-    return res.status(404).json({ error: "User not found." });
-  }
-
-  const balance = await fetchUserBalance(userId);
-
+  console.log(balance);
   if (balance === null) {
     return res
       .status(500)

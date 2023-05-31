@@ -22,13 +22,12 @@ const Shop = () => {
       axios
         .get(`/api/balance?userId=${user.id}`)
         .then((response) => {
-          console.log(response.data);
-          setBalance(response.data.balance);
+          setBalance(response.data.balance["balance"]);
         })
         .catch((error) => {
           console.error("Error fetching balance: ", error);
         });
-
+      console.log(balance);
       axios
         .get("/api/items")
         .then((response) => {
