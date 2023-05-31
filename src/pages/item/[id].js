@@ -134,6 +134,19 @@ const ItemPage = () => {
                   onClick={() => {
                     if (balance >= item.price) {
                       setSelectedItem(item);
+                      const newBalance = balance - item.price;
+                      axios
+                        .post("/api/updatedBalance", {
+                          userId: user.id,
+                          balance: newBalance,
+                        })
+                        .then((response) => {
+                          setBalance(newBalance);
+                        })
+                        .catch((error) => {
+                          console.error("Error updating balance: ", error);
+                        });
+
                       setShowQR(true); // toggle QR code visibility
                     } else {
                       alert("You don't have enough balance");
