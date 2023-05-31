@@ -2,28 +2,16 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FaHome, FaMusic } from "react-icons/fa";
 import { useRouter } from "next/router";
-import { fetchUserBalance } from "@/lib/databaseHelper";
-import { Clerk } from "@clerk/clerk-react";
+import { insertData } from "@/lib/databaseHelper";
 import axios from "axios";
-
-const getCurrentUserId = async () => {
-  try {
-    const currentUser = await Clerk.session.user();
-    if (currentUser) {
-      return currentUser.id;
-    }
-  } catch (err) {
-    console.error("Error fetching current user", err);
-  }
-
-  return null;
-};
+import { useUser } from "@clerk/nextjs";
 
 // Main component for the recycling game.
 const RecyclingGame = () => {
   const canvasRef = useRef(null);
   const audioRef = useRef(new Audio("/music.mp3"));
 
+  const { user } = useUser();
   // States to track buttons.
   const [homeButtonActive, setHomeButtonActive] = useState(true);
   const [musicButtonActive, setMusicButtonActive] = useState(true);
@@ -463,7 +451,7 @@ const RecyclingGame = () => {
       ctx.textAlign = "center";
       ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 60);
       ctx.fillText("Score: " + score, canvas.width / 2, canvas.height / 2);
-      axios.post("/api/newBalance", {clerkId:getCurrentUserId(), newBalance: score });
+      console.log(user);
     }
 
     function drawButton(x, y, width, height, text, callback) {
@@ -617,6 +605,9 @@ const RecyclingGame = () => {
           }
         );
       }
+
+      //insertData(score);
+      //axios.post("/api/newBalance", { clerkId: user.id, amount: score });
     }
 
     function startSpawningItems() {
