@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import GameInfo from "../components/GameInfo";
 import { FaQuestion, FaTimes } from "react-icons/fa";
+import { getUserRankings } from "@/lib/databaseHelper";
 
 const Leaderboard = () => {
   const { user } = useUser();
@@ -13,6 +14,7 @@ const Leaderboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const router = useRouter();
+  const [userRank, setUserRank] = useState(null);
 
   useEffect(() => {
     fetchPlayers();
@@ -33,6 +35,14 @@ const Leaderboard = () => {
     setIsOverlayOpen(!isOverlayOpen);
   };
 
+  useEffect(() => {
+    async function loadUserRank() {
+      const { userRank } = await getUserRankings("123");
+      setUserRank(userRank);
+    }
+    loadUserRank();
+  }, []);
+
   return (
     <div className="leaderboard-container">
       <div className="leaderboard" style={{ overflowX: "hidden" }}>
@@ -44,18 +54,25 @@ const Leaderboard = () => {
             {isOverlayOpen ? <FaTimes /> : <FaQuestion />}
           </button>
           <div className="logo">
-            <Image src="/leaderboard.png" alt="Leaderboard logo" width={152} height={129} />
+            <Image
+              src="/leaderboard.png"
+              alt="Leaderboard logo"
+              width={152}
+              height={129}
+            />
           </div>
         </div>
         {isOverlayOpen && (
           <div className="overlay" onClick={handleOverlayToggle}>
-      <GameInfo />
+            <GameInfo />
           </div>
         )}
         {user && (
           <div className="welcome-wrapper">
-            <h2 className="leaderboard-welcome">👋 Welcome, {user.fullName}!</h2>
-            <h3 className="rank-message">Your current rank is {1}</h3>
+            <h2 className="leaderboard-welcome">
+              👋 Welcome, {user.fullName}!
+            </h2>
+            <h3 className="rank-message">Your current rank is {userRank + 1}</h3>
           </div>
         )}
         <div className="table">

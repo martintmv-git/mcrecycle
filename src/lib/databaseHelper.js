@@ -32,6 +32,27 @@ export async function updateBalance(clerkId, newBalance) {
   return { success: true };
 }
 
+export async function getUserRankings(userId) {
+  const { data, error } = await supabase
+    .from("gameData")
+    .select("clerkId, points")
+    .order("points", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return { error };
+  }
+
+  const userScore =
+    data.find((element) => element.clerkId === userId)?.points || 0;
+  const userRank =
+    data.findIndex((element) => element.clerkId === userId) + 1 || 0;
+
+  console.log(userScore, userRank);
+
+  return { userScore, userRank };
+}
+
 export async function fetchUserBalance(userId) {
   const { data, error } = await supabase
     .from("gameData")
