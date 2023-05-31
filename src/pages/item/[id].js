@@ -13,7 +13,7 @@ const ItemPage = () => {
   const { user } = useUser();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [balance, setBalance] = useState(500); // don't forget to change to 0 for production
+  const [balance, setBalance] = useState(0); // don't forget to change to 0 for production
   const [showQR, setShowQR] = useState(false);
   let qrCodeRef = useRef(); // ref
   let canvasRef = useRef(); // additional canvas

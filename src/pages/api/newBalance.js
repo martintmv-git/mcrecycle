@@ -1,4 +1,4 @@
-import { updateBalance } from "../../lib/databaseHelper";
+import { fetchUserBalance, updateBalance } from "../../lib/databaseHelper";
 
 export default async function handler(req, res) {
   try {
@@ -16,7 +16,12 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "clerkid is required" });
     }
 
-    await updateBalance(clerkId, amount);
+    console.log("clerkId", clerkId);
+    const balance = await fetchUserBalance(clerkId);
+    console.log("balance", balance);
+    const newUserBalance = balance + amount;
+    await updateBalance(clerkId, newUserBalance);
+
     res.status(200).json({ message: "Balance updated successfully" });
   } catch (err) {
     console.error(err);
