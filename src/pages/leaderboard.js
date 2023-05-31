@@ -72,7 +72,7 @@ const Leaderboard = () => {
             <h2 className="leaderboard-welcome">
               👋 Welcome, {user.fullName}!
             </h2>
-            <h3 className="rank-message">Your current rank is {userRank + 1}</h3>
+            <h3 className="rank-message">Your current rank is {userRank}</h3>
           </div>
         )}
         <div className="table">
