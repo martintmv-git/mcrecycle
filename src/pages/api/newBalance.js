@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
     console.log("clerkId", clerkId);
     const balance = await fetchUserBalance(clerkId);
-    console.log("balance", balance);
+    console.log("balance", balance["balance"]);
     const newUserBalance = balance + amount;
     await updateBalance(clerkId, newUserBalance);
 
