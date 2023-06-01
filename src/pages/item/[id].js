@@ -92,6 +92,7 @@ const ItemPage = () => {
       };
       bgImage.src = "/qr-background.png";
     }
+    alert("Downloading QR code, you can find it in your downloads folder.");
   };
 
   return (
