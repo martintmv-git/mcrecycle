@@ -95,6 +95,7 @@ const Leaderboard = () => {
               if (index === 0) rowClass += " gold";
               else if (index === 1) rowClass += " silver";
               else if (index === 2) rowClass += " bronze";
+              else rowClass += " below-bronze";
               return (
                 <div key={index} className={rowClass}>
                   <div>{index + 1}</div>
