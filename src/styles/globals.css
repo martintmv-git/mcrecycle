@@ -407,7 +407,6 @@ canvas {
   flex-direction: column;
   padding: 1vw;
   margin: 20vh auto 0;
-  height: 75vh;
   width: 90vw; /* 90% of viewport width */
   box-sizing: border-box;
   color: #fff;
