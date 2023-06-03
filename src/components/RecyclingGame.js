@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { insertData } from "@/lib/databaseHelper";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
+import Head from "next/head";
 
 // Main component for the recycling game.
 const RecyclingGame = () => {
@@ -711,20 +712,36 @@ const RecyclingGame = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
-  
-      canvas.removeEventListener("pointerdown", (event) => handlePointer(event, "down"));
-      canvas.removeEventListener("pointermove", (event) => handlePointer(event, "move"));
-      canvas.removeEventListener("pointerup", (event) => handlePointer(event, "up"));
-      
-      canvas.removeEventListener("touchstart", (event) => handlePointer(event, "down"));
-      canvas.removeEventListener("touchmove", (event) => handlePointer(event, "move"));
-      canvas.removeEventListener("touchend", (event) => handlePointer(event, "up"));
-  
+
+      canvas.removeEventListener("pointerdown", (event) =>
+        handlePointer(event, "down")
+      );
+      canvas.removeEventListener("pointermove", (event) =>
+        handlePointer(event, "move")
+      );
+      canvas.removeEventListener("pointerup", (event) =>
+        handlePointer(event, "up")
+      );
+
+      canvas.removeEventListener("touchstart", (event) =>
+        handlePointer(event, "down")
+      );
+      canvas.removeEventListener("touchmove", (event) =>
+        handlePointer(event, "move")
+      );
+      canvas.removeEventListener("touchend", (event) =>
+        handlePointer(event, "up")
+      );
+
       audioRef.current.pause(); // Ensure that the audio is paused if the component is unmounted.
     };
   }, []);
   return (
     <div className="game-container">
+      <Head>
+        <title>McRecycle</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <canvas ref={canvasRef} className="game-canvas" />
       <div
         className={`game-button game-home-button ${

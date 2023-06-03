@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import RecyclingGame from '../components/RecyclingGame';
-import StartScreen from '../components/StartScreen';
-import { useRouter } from 'next/router';
+import React, { useState } from "react";
+import RecyclingGame from "../components/RecyclingGame";
+import StartScreen from "../components/StartScreen";
+import { useRouter } from "next/router";
+import Head from "next/head";
 
 const Home = () => {
   const [gameStarted, setGameStarted] = useState(false);
@@ -22,13 +23,22 @@ const Home = () => {
 
   return (
     <div>
+      <Head>
+        <title>Index</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+
       {gameStarted ? (
         <RecyclingGame />
       ) : (
-        <StartScreen onStartGame={handleStartGame} onLeaderboards={handleLeaderboards} onShop={handleShop} />
+        <StartScreen
+          onStartGame={handleStartGame}
+          onLeaderboards={handleLeaderboards}
+          onShop={handleShop}
+        />
       )}
     </div>
   );
-}
+};
 
 export default Home;

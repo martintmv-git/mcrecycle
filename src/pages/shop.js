@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import GameInfo from "../components/GameInfo";
 import { FaQuestion, FaTimes } from "react-icons/fa";
+import Head from "next/head";
 
 const Shop = () => {
   const [balance, setBalance] = useState(0);
@@ -64,6 +65,10 @@ const Shop = () => {
 
   return (
     <div className="leaderboard-container">
+      <Head>
+        <title>Shop</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <div className="leaderboard" style={{ overflowX: "hidden" }}>
         <div className="navbar">
           <button className="left-button" onClick={handleLeftButtonClick}>

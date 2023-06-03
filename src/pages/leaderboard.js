@@ -7,6 +7,7 @@ import Image from "next/image";
 import GameInfo from "../components/GameInfo";
 import { FaQuestion, FaTimes } from "react-icons/fa";
 import { getUserRankings } from "@/lib/databaseHelper";
+import Head from "next/head";
 
 const Leaderboard = () => {
   const { user } = useUser();
@@ -45,6 +46,10 @@ const Leaderboard = () => {
 
   return (
     <div className="leaderboard-container">
+      <Head>
+        <title>Leaderboard</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <div className="leaderboard" style={{ overflowX: "hidden" }}>
         <div className="navbar">
           <button className="left-button" onClick={handleLeftButtonClick}>
