@@ -58,11 +58,19 @@ const RecyclingGame = () => {
       console.error("Failed to play audio:", error);
     });
 
-    // Handler for resizing the window.
-    const handleResize = () => {
-      document.body.style.backgroundColor =
-        window.innerWidth < 768 ? backgroundColors[currentBackground] : "";
-    };
+// Handler for resizing the window.
+const handleResize = () => {
+  if (window.innerWidth >= 450) {
+    document.body.style.backgroundImage = "url('/mcd_pattern.png')";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.backgroundPosition = "center";
+  } else {
+    document.body.style.backgroundImage = "";
+    document.body.style.backgroundColor =
+      backgroundColors[currentBackground];
+  }
+};
 
     // Function to draw the score and lives.
     function drawScoreLives() {
