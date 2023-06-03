@@ -86,7 +86,6 @@ const Leaderboard = () => {
             <div>NAME</div>
             <div>POINTS</div>
           </div>
-          <hr></hr>
           {isLoading ? (
             <div className="loader"></div>
           ) : (
@@ -105,7 +104,6 @@ const Leaderboard = () => {
               );
             })
           )}
-          <hr></hr>
           <button
                   className="back-to-game-ldbd-button"
                   onClick={() => router.push("/shop")}
