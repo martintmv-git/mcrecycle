@@ -707,8 +707,19 @@ const RecyclingGame = () => {
       (event) => handlePointer(event, "up"),
       false
     );
+    // Cleanup function
     return () => {
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+  
+      canvas.removeEventListener("pointerdown", (event) => handlePointer(event, "down"));
+      canvas.removeEventListener("pointermove", (event) => handlePointer(event, "move"));
+      canvas.removeEventListener("pointerup", (event) => handlePointer(event, "up"));
+      
+      canvas.removeEventListener("touchstart", (event) => handlePointer(event, "down"));
+      canvas.removeEventListener("touchmove", (event) => handlePointer(event, "move"));
+      canvas.removeEventListener("touchend", (event) => handlePointer(event, "up"));
+  
       audioRef.current.pause(); // Ensure that the audio is paused if the component is unmounted.
     };
   }, []);
