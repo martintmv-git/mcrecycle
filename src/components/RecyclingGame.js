@@ -10,6 +10,7 @@ import Head from "next/head";
 // Main component for the recycling game.
 const RecyclingGame = () => {
   const canvasRef = useRef(null);
+  const collectItemAudioRef = useRef(new Audio("/collect_item_sound.mp3"));
   const audioRef = useRef(new Audio("/music.mp3"));
   let axiosCalled = false;
 
@@ -394,6 +395,12 @@ const RecyclingGame = () => {
         if (item.isColliding(bucket)) {
           items.splice(i, 1);
           score += 25;
+
+            // Play the collect item sound effect.
+            collectItemAudioRef.current.currentTime = 0;
+            collectItemAudioRef.current.play().catch((error) => {
+              console.error("Failed to play collect item sound:", error);
+            });
 
           if (score % 200 === 0) {
             currentBackground =
