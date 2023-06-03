@@ -173,12 +173,6 @@ canvas {
 
 .header-row,
 .player-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-  width: 100%;
-  border-radius: 8px;
   overflow: hidden;
   margin-top: 8px; /* margin between rows */
 }
@@ -201,12 +195,28 @@ canvas {
   box-shadow: 0px 15px 20px rgba(0,0,0,0.2); /* Increased box shadow on hover */
   transform: scale(1.05); /* Slightly scale cell on hover */
 }
-.header-row, .player-row {
+.header-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 90%; /* Reduce width to 90% of the container */
+  margin-left: auto; /* Center align the row */
+  margin-right: auto; /* Center align the row */
+  padding: 10px;
+  border-radius: 15px; /* Rounded corners */
+  font-weight: bold;
+  box-shadow: 0px 10px 15px rgba(0,0,0,0.1); /* Box shadow */
+  margin-bottom: 8px; /* margin between rows */
+}
+
+.player-row {
+  display: flex;
+  flex-direction:row;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%; /* Reduce width to 90% of the container */
+  height: 5vh;
   margin-left: auto; /* Center align the row */
   margin-right: auto; /* Center align the row */
   padding: 10px;
@@ -224,7 +234,7 @@ canvas {
 }
 
 .player-row {
-  border: 2px solid #27251F; /* McDonald's Dark Brown */
+  border: 1px solid #27251F; /* McDonald's Dark Brown */
   font-size: 1em; 
 }
 
@@ -733,6 +743,26 @@ canvas {
 .back-to-game-button:hover {
   background-color: darkred;
 }
+
+.back-to-game-ldbd-button {
+  background-color: #DA291C;
+  color: white;
+  border-radius: 15px;
+  font-size: 1.5em;
+  border: none;
+  padding: 15px 30px;
+  cursor: pointer;
+  display: block; 
+  margin: 20px auto;
+  margin-top: 3rem;
+  transition: background 0.3s ease;
+  width: 90%;
+}
+
+.back-to-game-ldbd-button:hover {
+  background-color: darkred;
+}
+
 
 @media (min-width: 768px) {
   .uniqueItemTextOverlay {

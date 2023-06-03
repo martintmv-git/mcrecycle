@@ -106,7 +106,12 @@ const Leaderboard = () => {
             })
           )}
           <hr></hr>
-          <button className="view-button">View All</button>
+          <button
+                  className="back-to-game-ldbd-button"
+                  onClick={() => router.push("/shop")}
+                >
+                  GO TO SHOP
+                </button>
         </div>
       </div>
     </div>
