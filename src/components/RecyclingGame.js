@@ -10,8 +10,8 @@ import Head from "next/head";
 // Main component for the recycling game.
 const RecyclingGame = () => {
   const canvasRef = useRef(null);
-  const collectItemAudioRef = useRef(new Audio("/collect_item_sound.mp3"));
-  const audioRef = useRef(new Audio("/music.mp3"));
+  const collectItemAudioRef = useRef(new Audio("/collected_item.mp3"));
+  const audioRef = useRef(new Audio("/bgm.mp3"));
   let axiosCalled = false;
 
   const { user } = useUser();
