@@ -396,11 +396,11 @@ const RecyclingGame = () => {
           items.splice(i, 1);
           score += 25;
 
-            // Play the collect item sound effect.
-            collectItemAudioRef.current.currentTime = 0;
-            collectItemAudioRef.current.play().catch((error) => {
-              console.error("Failed to play collect item sound:", error);
-            });
+          // Play the collect item sound effect.
+          collectItemAudioRef.current.currentTime = 0;
+          collectItemAudioRef.current.play().catch((error) => {
+            console.error("Failed to play collect item sound:", error);
+          });
 
           if (score % 200 === 0) {
             currentBackground =
@@ -715,30 +715,34 @@ const RecyclingGame = () => {
       (event) => handlePointer(event, "up"),
       false
     );
+    // Separate handler functions
+    const handlePointerDown = (event) => handlePointer(event, "down");
+    const handlePointerMove = (event) => handlePointer(event, "move");
+    const handlePointerUp = (event) => handlePointer(event, "up");
+    const handleTouchStart = (event) => handlePointer(event, "down");
+    const handleTouchMove = (event) => handlePointer(event, "move");
+    const handleTouchEnd = (event) => handlePointer(event, "up");
+
+    // Add event listeners
+    canvas.addEventListener("pointerdown", handlePointerDown);
+    canvas.addEventListener("pointermove", handlePointerMove);
+    canvas.addEventListener("pointerup", handlePointerUp);
+    canvas.addEventListener("touchstart", handleTouchStart);
+    canvas.addEventListener("touchmove", handleTouchMove);
+    canvas.addEventListener("touchend", handleTouchEnd);
+
     // Cleanup function
     return () => {
       window.removeEventListener("resize", handleResize);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
 
-      canvas.removeEventListener("pointerdown", (event) =>
-        handlePointer(event, "down")
-      );
-      canvas.removeEventListener("pointermove", (event) =>
-        handlePointer(event, "move")
-      );
-      canvas.removeEventListener("pointerup", (event) =>
-        handlePointer(event, "up")
-      );
-
-      canvas.removeEventListener("touchstart", (event) =>
-        handlePointer(event, "down")
-      );
-      canvas.removeEventListener("touchmove", (event) =>
-        handlePointer(event, "move")
-      );
-      canvas.removeEventListener("touchend", (event) =>
-        handlePointer(event, "up")
-      );
+      // Properly remove event listeners
+      canvas.removeEventListener("pointerdown", handlePointerDown);
+      canvas.removeEventListener("pointermove", handlePointerMove);
+      canvas.removeEventListener("pointerup", handlePointerUp);
+      canvas.removeEventListener("touchstart", handleTouchStart);
+      canvas.removeEventListener("touchmove", handleTouchMove);
+      canvas.removeEventListener("touchend", handleTouchEnd);
 
       audioRef.current.pause(); // Ensure that the audio is paused if the component is unmounted.
     };
