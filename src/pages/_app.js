@@ -1,4 +1,6 @@
+import StartScreen from "@/components/StartScreen";
 import "@/styles/globals.css";
+import StartPage from "@/components/StartPage";
 
 import {
   ClerkProvider,
@@ -36,7 +38,7 @@ function MyApp({ Component, pageProps }) {
             <Component {...pageProps} />
           </SignedIn>
           <SignedOut>
-            <RedirectToSignIn />
+            <StartPage />
           </SignedOut>
         </>
       )}
