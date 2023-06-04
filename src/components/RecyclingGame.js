@@ -19,6 +19,7 @@ const RecyclingGame = () => {
   const [homeButtonActive, setHomeButtonActive] = useState(true);
   const [musicButtonActive, setMusicButtonActive] = useState(true);
   const [gameOver, setGameOver] = useState(false);
+  const [mute, setMute] = useState(false);
 
   // NEXT.JS router.
   const router = useRouter();
@@ -28,12 +29,14 @@ const RecyclingGame = () => {
   }
 
   function handleMusicButtonClick() {
-    if (musicButtonActive) {
+    if (!mute) {
       audioRef.current.pause();
+      collectItemAudioRef.current.muted = true;
     } else {
       audioRef.current.play();
+      collectItemAudioRef.current.muted = false;
     }
-    setMusicButtonActive(!musicButtonActive);
+    setMute(!mute);
   }
 
   // Effect runs when the component mounts.
@@ -771,13 +774,11 @@ const handleResize = () => {
         <FaHome className="game-icon" />
       </div>
       <div
-        className={`game-button game-music-button ${
-          musicButtonActive ? "" : "game-button-off"
-        }`}
-        onClick={handleMusicButtonClick}
-      >
-        <FaMusic className="game-icon" />
-      </div>
+  className={`game-button game-music-button ${mute ? "game-button-off" : ""}`}
+  onClick={handleMusicButtonClick}
+>
+  <FaMusic className="game-icon" />
+</div>
     </div>
   );
 };
