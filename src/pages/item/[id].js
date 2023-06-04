@@ -102,9 +102,11 @@ const ItemPage = () => {
           <button className="left-button" onClick={handleLeftButtonClick}>
             Back
           </button>
-          <button className="left-button" onClick={handleRightButtonClick}>
-            <FaDownload /> QR
-          </button>
+          {showQR && (
+            <button className="left-button" onClick={handleRightButtonClick}>
+              <FaDownload /> QR
+            </button>
+          )}
           <div className="logo">
             <Image src="/shop.png" alt="Shop logo" width={152} height={129} />
           </div>
