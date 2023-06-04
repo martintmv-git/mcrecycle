@@ -819,10 +819,20 @@ canvas {
   background-size: cover;
 }
 
-.content-container h3, .content-container p {
-  background-color: rgba(255, 255, 255, 0.838);
+.content-container h1 {
+  background-color: rgba(255, 255, 255, 0.804);
   border-radius: 10px;
-  padding: 15px;
+  padding: 10px;
+  font-size: 25px;
+  border: 1px solid rgba(0, 0, 0, 0.278);
+}
+
+.content-container h3 {
+  background-color: rgba(255, 255, 255, 0.759);
+  border-radius: 10px;
+  padding: 20px;
+  font-size: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.278);
 }
 
 .center-content {
@@ -867,7 +877,7 @@ canvas {
   display: block; 
   margin: 20px auto;
   transition: background 0.3s ease;
-  width: 90%;
+  width: 100%;
 }
 .signin-button:hover {
   background-color: darkred;

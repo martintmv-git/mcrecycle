@@ -11,10 +11,6 @@ const StartPage = () => {
       </Head>
       <img src="/mcrecycle_logo.png" alt="McRecycle Logo" className="logo-signin"/>
       <div className="center-content content-container">
-        <br></br>
-        <br></br> 
-        <h3>Welcome to McRecycle!</h3>
-        <p>Click the button and choose a way to sign in.</p>
         <SignInButton className="signin-button"/>
       </div>
     </div>
