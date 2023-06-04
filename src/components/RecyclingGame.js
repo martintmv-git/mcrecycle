@@ -61,7 +61,7 @@ const RecyclingGame = () => {
 // Handler for resizing the window.
 const handleResize = () => {
   if (window.innerWidth >= 450) {
-    document.body.style.backgroundImage = "url('/mcd_pattern.png')";
+    document.body.style.backgroundImage = "url('/mcd_pattern_16.9.png')";
     document.body.style.backgroundSize = "cover";
     document.body.style.backgroundRepeat = "no-repeat";
     document.body.style.backgroundPosition = "center";
