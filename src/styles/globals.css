@@ -354,6 +354,7 @@ canvas {
   border: none;
   border-radius: 5px;
   text-align: center;
+  margin-bottom: 5vh;
 }
 .startscreen-button:hover {
   cursor: pointer;
@@ -369,6 +370,7 @@ canvas {
 }
 .leaderboard-button, .shop-button {
   width: 100%;
+  margin-bottom: 10vh;
 }
 .menu-title {
   background: #f9f9f98e;
