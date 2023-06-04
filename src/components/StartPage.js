@@ -4,14 +4,18 @@ import { SignInButton } from "@clerk/nextjs";
 
 const StartPage = () => {
   return (
-    <div>
+    <div className="signin-container">
       <Head>
-        <title>Welcome</title>
+        <title>Welcome to McRecycle</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <div>
-        <p>Please use the button below to sign in to play the game</p>
-        <SignInButton />
+      <img src="/mcrecycle_logo.png" alt="McRecycle Logo" className="logo-signin"/>
+      <div className="center-content content-container">
+        <br></br>
+        <br></br> 
+        <h3>Welcome to McRecycle!</h3>
+        <p>Click the button and choose a way to sign in.</p>
+        <SignInButton className="signin-button"/>
       </div>
     </div>
   );
