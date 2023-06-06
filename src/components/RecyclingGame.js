@@ -16,6 +16,7 @@ const RecyclingGame = () => {
 
   const { user } = useUser();
   // States to track buttons.
+  const [showTutorial, setShowTutorial] = useState(!hasSeenTutorial());
   const [homeButtonActive, setHomeButtonActive] = useState(true);
   const [musicButtonActive, setMusicButtonActive] = useState(true);
   const [gameOver, setGameOver] = useState(false);
@@ -37,6 +38,16 @@ const RecyclingGame = () => {
       collectItemAudioRef.current.muted = false;
     }
     setMute(!mute);
+  }
+
+  function loadTutorialImage() {
+    const tutorialImg = new Image();
+    tutorialImg.src = "/tutorial.png";
+    return tutorialImg;
+  }
+
+  function hasSeenTutorial() {
+    return localStorage.getItem("tutorialSeen") === "true";
   }
 
   // Effect runs when the component mounts.
@@ -216,6 +227,7 @@ const handleResize = () => {
       "#718000",
       "#718000",
     ];
+
 
     let currentBackground = 0;
 
@@ -398,6 +410,26 @@ const handleResize = () => {
       bucket.update();
       bucket.draw();
       drawScoreLives();
+
+// Draw tutorial image if score is less than 25
+if (showTutorial && score < 25) {
+  const tutorialImg = loadTutorialImage();
+  ctx.globalAlpha = 0.9;
+  ctx.drawImage(
+    tutorialImg,
+    0,
+    0,
+    canvas.width,
+    (canvas.width / tutorialImg.width) * tutorialImg.height
+  );
+  ctx.globalAlpha = 1;
+}
+
+    // If the user reaches a score of 25, set the localStorage flag.
+    if (score >= 25) {
+      setShowTutorial(false);
+      localStorage.setItem("tutorialSeen", "true");
+    }
 
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
