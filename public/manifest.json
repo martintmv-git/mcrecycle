@@ -4,8 +4,8 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "McRecycling",
-    "short_name": "McR",
+    "name": "McRecycle",
+    "short_name": "McRecycle",
     "description": "A little game made with next.js for LiveWall",
     "icons": [
         {
