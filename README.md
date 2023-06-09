@@ -29,6 +29,9 @@ The game was designed using **Figma** and developed in the following stack:
 
 Visit [https://pixel-minds.vercel.app](https://pixel-minds.vercel.app) and choose one of the 5 ways to login and play the game.
 
+
+If you want to log in using another way, click on **Sign Up** and then make an account. You need to make an account, so the **Leaderboards** and **Shop** work as intended. If you don't want to give your personal email or data, please just use [this website](https://10minutemail.com) for a **temporary 10 minute email**. (We **only store your first name** in our DataBase, if requested, we'll delete your data.)
+
 ## Installation
 
 To run the game locally, follow these steps:
