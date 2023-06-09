@@ -19,11 +19,11 @@ The game was designed using **Figma** and developed in the following stack:
 
 ## Features
 
-- Fully Responsive Design: The game layout adjusts to any screen size, making it playable on both mobile and desktop devices.
-- "Endless Runner" Gameplay: Offers an engaging user experience that keeps you coming back for more.
-- No Password Authentication: Uses Clerk for seamless, password-less authentication.
-- Leaderboard: Show off your high scores and compete with other players.
-- Points Shop: Earn and exchange your points for food discount coupons at McDonald's stores.
+- **Fully Responsive Design**: The game layout adjusts to any screen size, making it playable on both mobile and desktop devices.
+- **"Endless Runner" Gameplay**: Offers an engaging user experience that keeps you coming back for more.
+- **No Password Authentication**: Uses Clerk for seamless, password-less authentication.
+- **Leaderboard**: Show off your high scores and compete with other players.
+- **Points Shop**: Earn and exchange your points for food discount coupons at McDonald's stores.
 
 ## Play the Game
 
