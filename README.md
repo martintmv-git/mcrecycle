@@ -58,6 +58,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY={YOUR_KEY}
 ```
 
 **Replace {YOUR_KEY} with your actual enviroment variable**.
+NOTE: We won't share our **Enviroment keys**, as API keys are private. If you want to run the project locally, you need to get your own keys from **Supabase** and **Clerk**. To fully test the app, you can just test the hosted version right [here](https://pixel-minds.vercel.app).
 
 
 ## 4. Start a local development server on port 3000:
