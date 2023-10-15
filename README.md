@@ -1,4 +1,4 @@
-# Pixel Minds - McRecycle
+# McRecycle
 
 ## About the project
 
@@ -74,7 +74,7 @@ After running the server, open your browser and visit [http://localhost:3000](ht
 
 ## Support
 
-If you need assistance or have any questions, feel free to contact us through the issue tracker on GitLab or directly at our email addresses.
+If you need assistance or have any questions, feel free to contact us through the issue tracker on GitHub or directly at work.martintmv@gmail.com.
 
 ## License
 
