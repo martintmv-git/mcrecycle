@@ -26,6 +26,7 @@ The game was designed using **Figma** and developed in the following stack:
 - **Points Shop**: Earn and exchange your points for food discount coupons at McDonald's stores.
 
 ## Play the Game
+```NOTE: As the project is now over, Supabase's DB is now shut down, but you can still test the gameplay, Scoreboard and Shop is unavailable currently.```
 
 Visit [https://pixel-minds.vercel.app](https://pixel-minds.vercel.app) and choose one of the 5 ways to login and play the game.
 
