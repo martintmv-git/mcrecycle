@@ -1,4 +1,4 @@
-# Pixel Minds - McRecyle
+# Pixel Minds - McRecycle
 
 ## About the project
 
