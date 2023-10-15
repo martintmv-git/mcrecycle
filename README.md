@@ -1,5 +1,5 @@
 # McRecycle
-
+![McRecycle Screenshot](https://github.com/martintmv-git/mcrecycle/assets/101264514/a759067f-de49-4a29-9252-cbccc959296f)
 ## About the project
 
 **McRecycle** is an innovative **Progressive Web Application** (PWA) game, developed by our team, **Pixel Minds**. This game merges fun and learning, encouraging McDonald's users to **boost their awareness of sustainability and recycling**. Our goal was to bring attention to the problem, while also keeping McDonalds customers **engaged and rewarded**.
