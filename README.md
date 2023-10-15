@@ -10,7 +10,10 @@ This project is a game designed to be played on both **mobile and desktop platfo
 
 In line with our mission to **boost customer loyalty**, we have introduced a leaderboard where players' scores are ranked and they compete for TOP 3's big awwards, and also a shop where the points earned can be exchanged for **food QR discount coupons** at McDonald's stores.
 
-The game was designed using **Figma** and developed in the following stack:
+### The game was designed using **Figma**: 
+<img width="948" alt="Screenshot 2023-10-15 at 17 28 54" src="https://github.com/martintmv-git/mcrecycle/assets/101264514/01a95b93-9e8c-493d-9af8-cdaeecebdecf">
+
+### The game was developed in the following stack:
 
 [![React](https://img.shields.io/badge/React-18-blue)](https://reactjs.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-13-lightgrey)](https://nextjs.org/)
